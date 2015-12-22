@@ -11,12 +11,8 @@ var startingTab = firstInput.closest('.x1u').parentElement.closest('.x1u');
 var threeInputs = firstInput.closest('.x1u').getElementsByTagName('input');
 
 // calculate func factory
-
 function calculate(node) {
   return {
-    equals: function() {
-      return node
-    },
     _node: function() {
       return node;
     },
@@ -31,7 +27,6 @@ function calculate(node) {
     },
     stopInput: function() {
       b = node.getElementsByTagName('input')[1];
-
       return b;
     },
     valInput: function() {
@@ -42,9 +37,6 @@ function calculate(node) {
       node = node.nextSibling;
       return this
     },
-    switchTime: function(){
-
-    },
     calcStopTime: function(){
       a = this.startInput().value;
       b = this.stopInput();
@@ -53,14 +45,10 @@ function calculate(node) {
       var stopTime = aMoment.add('hours', c).format('HH:mm')
       b.value = stopTime;
       return stopTime;
-    },
-    render: function(){
-
     }
   }
 }
 
-//
 // function findBucket(node) {
 //   return node.closest('.x1u');
 // }
@@ -89,16 +77,13 @@ function makeArray(allBuckets){
       newArray.push(_this);
     }
   }
+  for (var i = 0; i < newArray.length; i++) {
+    newArray[i]
+  }
   return newArray;
 }
 
 
-//
-// function calculate(node) {
-//   var hours = document.querySelector('#B26_1_2');
-// }
-//
-//
 // function dayNodeCalculator(a) {
 //   var stopPoint = a + 2;
 // }
@@ -111,6 +96,3 @@ function makeArray(allBuckets){
 //   var nextDay = c + 1;
 // }
 //
-// function nodeCalculator(22, 1, 2) {
-//   // day
-// }

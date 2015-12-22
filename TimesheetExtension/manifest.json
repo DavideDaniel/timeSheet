@@ -1,0 +1,25 @@
+{
+  "name": "Timesheet",
+  "version": "0.1",
+  "description": "Fill out timesheets with ease",
+  "background": {
+    "page": "background.html"
+  },
+  "manifest_version": 2,
+  "browser_action": {
+    "name": "Timesheets with DOM Manipulation",
+    "icons": ["icon.png"],
+    "default_icon": "icon.png",
+    "default_popup": "pop_up.html",
+    "default_title": "Quick Timesheets"
+  },
+  "permissions": [
+    "tabs","https://global-ebusiness.oraclecorp.com/*"
+  ],
+  "content_scripts": [{
+    "js": ["jquery-2.0.2.min.js", "moment.js", "background.js", "content.js", "popup.js"],
+    "css": ["styles.css"],
+    "matches": ["https://global-ebusiness.oraclecorp.com/*"],
+    "run_at" : "document_end"
+  }]
+}
