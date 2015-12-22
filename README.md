@@ -1,5 +1,4 @@
-# timeSheet
-Chrome Extension - Internal Tool
+# Timesheet Chrome Extension - Internal Tool
 
 * No more tedious figuring out military time conversions
 * Actually calculating based on present fields
