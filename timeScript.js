@@ -1,4 +1,3 @@
-
 // var startTime = "09:00";
 
 // some node points in the DOM
@@ -18,11 +17,12 @@ function calculate(node) {
     },
     startInput: function(custom) {
       a = node.getElementsByTagName('input')[0];
+      if (a.value === '') {
+        a.value = '09:00'
+      }
       if (custom) {
         a.value = custom;
-        return a;
       }
-      a.value = '09:00'
       return a;
     },
     stopInput: function() {
@@ -33,15 +33,15 @@ function calculate(node) {
       c = node.getElementsByTagName('input')[2];
       return c.value;
     },
-    switchTab: function(){
+    switchTab: function() {
       node = node.nextSibling;
       return this
     },
-    calcStopTime: function(){
+    calcStopTime: function() {
       a = this.startInput().value;
       b = this.stopInput();
       c = this.valInput();
-      aMoment = new moment(a,'HH:mm');
+      aMoment = new moment(a, 'HH:mm');
       var stopTime = aMoment.add('hours', c).format('HH:mm')
       b.value = stopTime;
       return stopTime;
@@ -49,31 +49,18 @@ function calculate(node) {
   }
 }
 
-// function findBucket(node) {
-//   return node.closest('.x1u');
-// }
-//
-// function getBucketInputs(node) {
-//   return node.getElementsByTagName('input');
-// }
-//
-// function concatIt(num) {
-//   var nodeId = '#B' + num + '_1_2';
-//   return nodeId
-// }
-//
 function setFirstNode(id) {
   var startingPoint = document.querySelector(id);
 }
 
 var allBuckets = document.querySelectorAll('.x1u');
 
-function makeArray(allBuckets){
+function makeArray(allBuckets) {
   var newArray = [];
   for (var i = 0; i < allBuckets.length; i++) {
     var _this = allBuckets[i];
-    var _that = allBuckets[i+1];
-    if (_this.contains(_that)){
+    var _that = allBuckets[i + 1];
+    if (_this.contains(_that)) {
       newArray.push(_this);
     }
   }
@@ -82,17 +69,3 @@ function makeArray(allBuckets){
   }
   return newArray;
 }
-
-
-// function dayNodeCalculator(a) {
-//   var stopPoint = a + 2;
-// }
-//
-// function nextBucket(b) {
-//   var nextBucket = b + 1;
-// }
-//
-// function nextDay(c) {
-//   var nextDay = c + 1;
-// }
-//
