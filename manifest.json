@@ -1,5 +1,5 @@
 {
-  "name": "Timesheet",
+  "name": "MM-Time",
   "author": "David Daniel",
   "version": "0.1",
   "description": "Fill out timesheets with ease",
@@ -8,11 +8,11 @@
   },
   "manifest_version": 2,
   "browser_action": {
-    "name": "Timesheets with DOM Manipulation",
+    "name": "Quick timesheets with DOM manipulation",
     "icons": ["mmTime.png"],
     "default_icon": "mmTime.png",
     "default_popup": "pop_up.html",
-    "default_title": "Quick Timesheets"
+    "default_title": "MM-Time"
   },
   "permissions": [
     "tabs","https://global-ebusiness.oraclecorp.com/*"
