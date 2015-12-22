@@ -52,7 +52,7 @@ function detectInputs() {
   }
 }
 
-var keyupTimeoutID = 0;
+var keyupTimer = 0;
 
 function parseId(id) {
   var num = id.split('B')[1];
@@ -72,8 +72,8 @@ function testId(arr) {
 
 function inputHandler(input) {
   input.addEventListener('input', function() {
-    clearTimeout(keyupTimeoutID);
-    keyupTimeoutID = setTimeout(function() {
+    clearTimeout(keyupTimer);
+    keyupTimer = setTimeout(function() {
       var pNode = setParentNode(input);
       var parsedId = parseId(input.id);
       if (parsedId[1] > 1) {

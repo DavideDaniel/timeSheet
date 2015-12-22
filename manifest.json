@@ -12,7 +12,8 @@
     "icons": ["mmTime.png"],
     "default_icon": "mmTime.png",
     "default_popup": "pop_up.html",
-    "default_title": "MM-Time"
+    "default_title": "MM-Time",
+    "css": ["styles.css"]
   },
   "permissions": [
     "tabs","https://global-ebusiness.oraclecorp.com/*"
