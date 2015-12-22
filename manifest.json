@@ -9,8 +9,8 @@
   "manifest_version": 2,
   "browser_action": {
     "name": "Timesheets with DOM Manipulation",
-    "icons": ["icon.png"],
-    "default_icon": "icon.png",
+    "icons": ["mmTime.png"],
+    "default_icon": "mmTime.png",
     "default_popup": "pop_up.html",
     "default_title": "Quick Timesheets"
   },
