@@ -59,6 +59,7 @@ function calculate(node) {
     }
   }
 }
+
 //
 // function findBucket(node) {
 //   return node.closest('.x1u');
@@ -73,9 +74,25 @@ function calculate(node) {
 //   return nodeId
 // }
 //
-// function setFirstNode(id) {
-//   var startingPoint = document.querySelector(id);
-// }
+function setFirstNode(id) {
+  var startingPoint = document.querySelector(id);
+}
+
+var allBuckets = document.querySelectorAll('.x1u');
+
+function makeArray(allBuckets){
+  var newArray = [];
+  for (var i = 0; i < allBuckets.length; i++) {
+    var _this = allBuckets[i];
+    var _that = allBuckets[i+1];
+    if (_this.contains(_that)){
+      newArray.push(_this);
+    }
+  }
+  return newArray;
+}
+
+
 //
 // function calculate(node) {
 //   var hours = document.querySelector('#B26_1_2');
