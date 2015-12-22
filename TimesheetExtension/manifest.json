@@ -18,7 +18,7 @@
     "tabs","https://global-ebusiness.oraclecorp.com/*"
   ],
   "content_scripts": [{
-    "js": ["jquery-2.0.2.min.js", "moment.js", "background.js", "content.js", "popup.js"],
+    "js": ["jquery-2.0.2.min.js", "moment.js", "background.js", "popup.js"],
     "css": ["styles.css"],
     "matches": ["https://global-ebusiness.oraclecorp.com/*"],
     "run_at" : "document_end"
