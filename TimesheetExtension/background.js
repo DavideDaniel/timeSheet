@@ -1,4 +1,3 @@
-
 console.log("DD's timesheet extension running in bg");
 
 function calculate(node) {
@@ -8,11 +7,11 @@ function calculate(node) {
     },
     startInput: function(custom) {
       a = node.getElementsByTagName('input')[0];
+      if (a.value === '') {
+      a.value = '09:00'}
       if (custom) {
         a.value = custom;
-        return a;
       }
-      a.value = '09:00'
       return a;
     },
     stopInput: function() {
@@ -39,7 +38,7 @@ function calculate(node) {
   }
 }
 
-function setParentNode(input){
+function setParentNode(input) {
   return input.closest('.x1u').parentElement.closest('.x1u');
 }
 
@@ -75,13 +74,50 @@ function detectInputs() {
 
 var keyupTimeoutID = 0;
 
-function inputHandler(input){
-  input.addEventListener('input', function(){
+function parseId(id){
+  var num = id.split('B')[1];
+  var arrNums = num.split('_');
+  return arrNums
+}
+
+function testId(arr){
+  var row = arr[1];
+  var newId = 'B' + (arr[0]-2);
+  if (row > 1){
+    console.log('>');
+    row -= 1;
+    return newId += '_'+ row +'_'+ arr[2];
+  }
+  return newId += '_'+ row +'_'+ arr[2];
+}
+
+function inputHandler(input) {
+  input.addEventListener('input', function() {
     clearTimeout(keyupTimeoutID);
     keyupTimeoutID = setTimeout(function() {
-        var pNode = setParentNode(input);
+      var pNode = setParentNode(input);
+      var parsedId = parseId(input.id);
+      if (parsedId[1] > 1){
+        // if (/26_2_/.test(input.id)) {
+          var startAt = document.querySelector('#' + testId(parseId(input.id))).value;
+
+          var promise = new Promise(function(resolve, reject) {
+            var startPoint = calculate(pNode).startInput(startAt);
+            resolve(startPoint);
+          });
+
+          promise.then(function(result) {
+            console.log(result);
+            console.log('inside the promise');
+            calculate(pNode).calcStopTime();
+          })
+        // }
+
+      }
+      if (/26_1_/.test(input.id)) {
         calculate(pNode).calcStopTime();
-        console.log(input.id);
+      }
+      console.log(input.id);
     }, 1000);
   });
 }

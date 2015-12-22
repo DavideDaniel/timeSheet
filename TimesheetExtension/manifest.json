@@ -1,5 +1,6 @@
 {
   "name": "Timesheet",
+  "author": "David Daniel",
   "version": "0.1",
   "description": "Fill out timesheets with ease",
   "background": {
