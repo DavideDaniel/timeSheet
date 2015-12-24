@@ -3,13 +3,8 @@
   "author": "David Daniel",
   "version": "0.1",
   "description": "Fill out timesheets with ease",
-  "background": {
-    "page": "background.html"
-  },
   "manifest_version": 2,
   "browser_action": {
-    "name": "Quick timesheets with DOM manipulation",
-    "icons": ["mmTime.png"],
     "default_icon": "mmTime.png",
     "default_popup": "pop_up.html",
     "default_title": "MM-Time",
@@ -19,8 +14,7 @@
     "tabs","https://global-ebusiness.oraclecorp.com/*"
   ],
   "content_scripts": [{
-    "js": ["moment.js", "background.js", "popup.js"],
-    "css": ["styles.css"],
+    "js": ["moment.js", "content.js"],
     "matches": ["https://global-ebusiness.oraclecorp.com/*"],
     "run_at" : "document_end"
   }]
