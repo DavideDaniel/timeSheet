@@ -1,3 +1,4 @@
+;
 (function() {
   console.log('active');
 
@@ -87,7 +88,7 @@
           promise.then(function(result) {
             calculate(pNode).calcStopTime();
           })
-        } 
+        }
         if (parsedId[1] == 1) {
           calculate(pNode).startInput();
           calculate(pNode).calcStopTime();

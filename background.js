@@ -1,4 +1,4 @@
-// console.log("DD's timesheet extension running in bg","Click extension icon to start once you have loaded a template");
+// console.log("timesheet extension running in bg");
 //
 // chrome.browserAction.onClicked.addListener(function(tab) {
 //   chrome.tabs.executeScript({
