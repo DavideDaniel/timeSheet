@@ -10,12 +10,16 @@
     "default_title": "MM-Time",
     "css": ["styles.css"]
   },
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  },
   "permissions": [
     "tabs","https://global-ebusiness.oraclecorp.com/*"
   ],
   "content_scripts": [{
-    "js": ["moment.js", "content.js"],
     "matches": ["https://global-ebusiness.oraclecorp.com/*"],
+    "js": ["moment.js", "content.js"],
     "run_at" : "document_end"
   }]
 }

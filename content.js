@@ -46,12 +46,15 @@
   }
 
   function detectInputs() {
-    var allInputs = document.querySelectorAll('span input')
+    var allInputs = document.querySelectorAll('span input');
+    var filteredInputs = [];
     for (var i = 0; i < allInputs.length; i++) {
       if (allInputs[i].title.match(/Hrs/) && allInputs[i].title.match(/Mon|Tue|Wed|Thu|Fri/)) {
-        inputHandler(allInputs[i]);
+        // keyUpHandler(allInputs[i]);
+        filteredInputs.push(allInputs[i]);
       }
     }
+    return filteredInputs;
   }
 
   var keyupTimer = 0;
@@ -72,13 +75,15 @@
     return newId += '_' + row + '_' + arr[2];
   }
 
-  function inputHandler(input) {
-    input.addEventListener('input', function() {
+  function keyUpHandler(e) {
+    // e.currentTarget (if you're gonna do all of them together)
+    // input.addEventListener('keyup', function () {
+    console.log('Event emitted by: ', e.target.id);
       clearTimeout(keyupTimer);
       keyupTimer = setTimeout(function() {
-        var pNode = setParentNode(input);
-        var parsedId = parseId(input.id);
-        var startAt = document.querySelector('#' + testId(parseId(input.id))).value;
+        var pNode = setParentNode(e.target);
+        var parsedId = parseId(e.target.id);
+        var startAt = document.querySelector('#' + testId(parseId(e.target.id))).value;
         if (parsedId[1] > 1) {
           var promise = new Promise(function(resolve, reject) {
             var startPoint = calculate(pNode).startInput(startAt);
@@ -94,8 +99,50 @@
           calculate(pNode).calcStopTime();
         }
       }, 1000);
-    });
+    // });
   }
 
-  detectInputs();
+  function addAllHandlers() {
+    var relevantInputs = detectInputs();
+    for (var i = 0; i < relevantInputs.length; i++) {
+      relevantInputs[i].addEventListener('keyup', keyUpHandler);
+    }
+  }
+
+  function removeAllHandlers() {
+    var relevantInputs = detectInputs();
+    for (var i = 0; i < relevantInputs.length; i++) {
+      relevantInputs[i].removeEventListener('keyup', keyUpHandler);
+    }
+  }
+
+  // detectInputs();
+  addAllHandlers();
+
+  chrome.runtime.sendMessage({
+    from: 'content',
+    subject: 'active'
+  });
+  //
+  chrome.runtime.onMessage.addListener(function(msg, sender, response) {
+
+    var msgObj = {
+      statusOfExt: ''
+    }
+    switch (msg.subject) {
+      case 'enable':
+        msgObj.statusOfExt = 'Enabled';
+        addAllHandlers();
+        break;
+      case 'disable':
+        msgObj.statusOfExt = 'Disabled';
+        removeAllHandlers();
+        break;
+      default:
+        console.error("Message: ", msg);
+        break;
+    }
+    console.log(msgObj.statusOfExt);
+    response(msgObj);
+  });
 })();

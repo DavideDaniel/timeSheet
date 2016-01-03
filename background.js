@@ -7,3 +7,12 @@
 //     file: "content_scripts.js"
 //   });
 // });
+
+// chrome.runtime.onMessage.addListener(function (msg, sender) {
+//   if ((msg.from === 'content') && (msg.subject === 'active')) {
+//     chrome.pageAction.show(sender.tab.id);
+//   }
+// });
+chrome.browserAction.onClicked.addListener(function(tab) {
+  
+});
