@@ -10,27 +10,25 @@
 window.addEventListener('DOMContentLoaded', function() {
   var enableBtn = document.getElementById('enableExt');
   var disableBtn = document.getElementById('disableExt');
-  // ...query for the active tab...
+  setStatus();
 
   enableBtn.addEventListener('click', function() {
     chrome.tabs.query({
       active: true,
       currentWindow: true
     }, function(tabs) {
-      // ...and send a request for the DOM info...
+
       var statusTxt = document.getElementById('statusExt');
       console.log('enableFunc');
       if (statusTxt.innerText == '' || statusTxt.innerText == 'disabled') {
         chrome.tabs.sendMessage(
           tabs[0].id,
-          // sendMsg('enable'),
+
           {
             from: 'popup',
             subject: 'enable'
           },
-          function() {
-            statusTxt.innerText = 'enabled';
-          });
+          setStatus);
       }
     });
   });
@@ -46,17 +44,17 @@ window.addEventListener('DOMContentLoaded', function() {
         if (statusTxt.innerText == '' || statusTxt.innerText == 'enabled') {
           chrome.tabs.sendMessage(
             tabs[0].id,
-            // sendMsg('disable'),
             {
               from: 'popup',
               subject: 'disable'
             },
-            function() {
-              statusTxt.innerText = 'disabled';
-            });
+            setStatus);
 
         }
       });
+  });
+  chrome.browserAction.onClicked.addListener(function(tab) {
+    console.log('clickeeed');
   });
 });
 
@@ -68,5 +66,9 @@ function sendMsg(a) {
 }
 
 function setStatus(msg) {
-  document.getElementById('statusExt').textContent = msg.statusOfExt;
+  document.getElementById('statusExt').textContent = '';
+  if (msg) {
+  document.getElementById('statusExt').textContent = msg.statusOfExt
+  }
+
 }

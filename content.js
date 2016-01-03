@@ -105,14 +105,14 @@
   function addAllHandlers() {
     var relevantInputs = detectInputs();
     for (var i = 0; i < relevantInputs.length; i++) {
-      relevantInputs[i].addEventListener('keyup', keyUpHandler);
+      relevantInputs[i].addEventListener('input', keyUpHandler);
     }
   }
 
   function removeAllHandlers() {
     var relevantInputs = detectInputs();
     for (var i = 0; i < relevantInputs.length; i++) {
-      relevantInputs[i].removeEventListener('keyup', keyUpHandler);
+      relevantInputs[i].removeEventListener('input', keyUpHandler);
     }
   }
 
