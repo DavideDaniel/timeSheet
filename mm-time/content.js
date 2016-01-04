@@ -76,27 +76,27 @@
 
   function keyUpHandler(e) {
     // e.currentTarget (if you're gonna do all of them together)
-    console.log('Event emitted by: ', e.target.id);
-      clearTimeout(keyupTimer);
-      keyupTimer = setTimeout(function() {
-        var pNode = setParentNode(e.target);
-        var parsedId = parseId(e.target.id);
-        var startAt = document.querySelector('#' + testId(parseId(e.target.id))).value;
-        if (parsedId[1] > 1) {
-          var promise = new Promise(function(resolve, reject) {
-            var startPoint = calculate(pNode).startInput(startAt);
-            resolve(startPoint);
-          });
+    // console.log('Event emitted by: ', e.target.id);
+    clearTimeout(keyupTimer);
+    keyupTimer = setTimeout(function() {
+      var pNode = setParentNode(e.target);
+      var parsedId = parseId(e.target.id);
+      var startAt = document.querySelector('#' + testId(parseId(e.target.id))).value;
+      if (parsedId[1] > 1) {
+        var promise = new Promise(function(resolve, reject) {
+          var startPoint = calculate(pNode).startInput(startAt);
+          resolve(startPoint);
+        });
 
-          promise.then(function(result) {
-            calculate(pNode).calcStopTime();
-          })
-        }
-        if (parsedId[1] == 1) {
-          calculate(pNode).startInput();
+        promise.then(function(result) {
           calculate(pNode).calcStopTime();
-        }
-      }, 500);
+        })
+      }
+      if (parsedId[1] == 1) {
+        calculate(pNode).startInput();
+        calculate(pNode).calcStopTime();
+      }
+    }, 300);
   }
 
   function addAllHandlers() {
@@ -115,22 +115,21 @@
 
   addAllHandlers();
 
-// FOR SHOW PAGE ACTION IN URL
-//   chrome.runtime.sendMessage({
-//   from:    'content',
-//   subject: 'showPageAction'
-// });
+  // FOR SHOW PAGE ACTION IN URL
+  //   chrome.runtime.sendMessage({
+  //   from:    'content',
+  //   subject: 'showPageAction'
+  // });
 
   chrome.runtime.onMessage.addListener(function(msg, sender, response) {
     var msgObj = {
-      statusOfExt: ''
-    }
-    // FOR SHOW PAGE ACTION IN URL
-    // if ((msg.from === 'popup') && (msg.subject === 'SetStatus')) {
-    //     msgObj.statusOfExt = 'Enabled';
-    //   response(msgObj);
-    // }
-
+        statusOfExt: ''
+      }
+      // FOR SHOW PAGE ACTION IN URL
+      // if ((msg.from === 'popup') && (msg.subject === 'SetStatus')) {
+      //     msgObj.statusOfExt = 'Enabled';
+      //   response(msgObj);
+      // }
 
     switch (msg.subject) {
       case 'enable':
