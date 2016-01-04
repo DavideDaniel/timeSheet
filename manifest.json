@@ -1,7 +1,7 @@
 {
   "name": "MM-Time",
   "author": "David Daniel",
-  "version": "0.1",
+  "version": "0.2",
 
   "description": "Fill out timesheets with ease",
   "manifest_version": 2,
@@ -16,7 +16,7 @@
   "permissions": [
     "tabs","https://global-ebusiness.oraclecorp.com/*"
   ],
-  
+
   "content_scripts": [{
     "matches": ["https://global-ebusiness.oraclecorp.com/*"],
     "js": ["moment.js", "content.js"],
