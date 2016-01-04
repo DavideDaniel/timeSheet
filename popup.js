@@ -10,7 +10,6 @@
 window.addEventListener('DOMContentLoaded', function() {
   var enableBtn = document.getElementById('enableExt');
   var disableBtn = document.getElementById('disableExt');
-  setStatus();
 
   enableBtn.addEventListener('click', function() {
     chrome.tabs.query({
@@ -19,8 +18,7 @@ window.addEventListener('DOMContentLoaded', function() {
     }, function(tabs) {
 
       var statusTxt = document.getElementById('statusExt');
-      console.log('enableFunc');
-      if (statusTxt.innerText == '' || statusTxt.innerText == 'disabled') {
+      if (statusTxt.innerText == '' || statusTxt.innerText == 'Disabled') {
         chrome.tabs.sendMessage(
           tabs[0].id,
 
@@ -40,21 +38,15 @@ window.addEventListener('DOMContentLoaded', function() {
       },
       function(tabs) {
         var statusTxt = document.getElementById('statusExt');
-        console.log(statusTxt);
-        if (statusTxt.innerText == '' || statusTxt.innerText == 'enabled') {
+        if (statusTxt.innerText == '' || statusTxt.innerText == 'Enabled') {
           chrome.tabs.sendMessage(
-            tabs[0].id,
-            {
+            tabs[0].id, {
               from: 'popup',
               subject: 'disable'
             },
             setStatus);
-
         }
       });
-  });
-  chrome.browserAction.onClicked.addListener(function(tab) {
-    console.log('clickeeed');
   });
 });
 
@@ -66,9 +58,8 @@ function sendMsg(a) {
 }
 
 function setStatus(msg) {
-  document.getElementById('statusExt').textContent = '';
-  if (msg) {
-  document.getElementById('statusExt').textContent = msg.statusOfExt
+  console.log(msg);
+  if (msg && msg.statusOfExt) {
+    document.getElementById('statusExt').textContent = msg.statusOfExt;
   }
-
 }

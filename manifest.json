@@ -2,21 +2,21 @@
   "name": "MM-Time",
   "author": "David Daniel",
   "version": "0.1",
+
   "description": "Fill out timesheets with ease",
   "manifest_version": 2,
+
   "browser_action": {
     "default_icon": "mmTime.png",
     "default_popup": "pop_up.html",
     "default_title": "MM-Time",
     "css": ["styles.css"]
   },
-  "background": {
-    "scripts": ["background.js"],
-    "persistent": false
-  },
+
   "permissions": [
     "tabs","https://global-ebusiness.oraclecorp.com/*"
   ],
+  
   "content_scripts": [{
     "matches": ["https://global-ebusiness.oraclecorp.com/*"],
     "js": ["moment.js", "content.js"],

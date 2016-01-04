@@ -1,5 +1,4 @@
-// console.log("timesheet extension running in bg");
-//
+
 // chrome.browserAction.onClicked.addListener(function(tab) {
 //   chrome.tabs.executeScript({
 //     code: "console.log('herro')",
@@ -9,10 +8,7 @@
 // });
 
 // chrome.runtime.onMessage.addListener(function (msg, sender) {
-//   if ((msg.from === 'content') && (msg.subject === 'active')) {
+//   if ((msg.from === 'content') && (msg.subject === 'showPageAction')) {
 //     chrome.pageAction.show(sender.tab.id);
 //   }
 // });
-chrome.browserAction.onClicked.addListener(function(tab) {
-  console.log('clickeeed');
-});

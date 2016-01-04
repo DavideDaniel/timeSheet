@@ -18,3 +18,7 @@
 #### TODO
 ---
 * Automating imports of hours from OA via the extension
+
+#### Updates
+---
+* Added enable & disable buttons for more user control

@@ -50,7 +50,6 @@
     var filteredInputs = [];
     for (var i = 0; i < allInputs.length; i++) {
       if (allInputs[i].title.match(/Hrs/) && allInputs[i].title.match(/Mon|Tue|Wed|Thu|Fri/)) {
-        // keyUpHandler(allInputs[i]);
         filteredInputs.push(allInputs[i]);
       }
     }
@@ -77,7 +76,6 @@
 
   function keyUpHandler(e) {
     // e.currentTarget (if you're gonna do all of them together)
-    // input.addEventListener('keyup', function () {
     console.log('Event emitted by: ', e.target.id);
       clearTimeout(keyupTimer);
       keyupTimer = setTimeout(function() {
@@ -98,8 +96,7 @@
           calculate(pNode).startInput();
           calculate(pNode).calcStopTime();
         }
-      }, 1000);
-    // });
+      }, 500);
   }
 
   function addAllHandlers() {
@@ -116,19 +113,25 @@
     }
   }
 
-  // detectInputs();
   addAllHandlers();
 
-  chrome.runtime.sendMessage({
-    from: 'content',
-    subject: 'active'
-  });
-  //
-  chrome.runtime.onMessage.addListener(function(msg, sender, response) {
+// FOR SHOW PAGE ACTION IN URL
+//   chrome.runtime.sendMessage({
+//   from:    'content',
+//   subject: 'showPageAction'
+// });
 
+  chrome.runtime.onMessage.addListener(function(msg, sender, response) {
     var msgObj = {
       statusOfExt: ''
     }
+    // FOR SHOW PAGE ACTION IN URL
+    // if ((msg.from === 'popup') && (msg.subject === 'SetStatus')) {
+    //     msgObj.statusOfExt = 'Enabled';
+    //   response(msgObj);
+    // }
+
+
     switch (msg.subject) {
       case 'enable':
         msgObj.statusOfExt = 'Enabled';
@@ -142,7 +145,6 @@
         console.error("Message: ", msg);
         break;
     }
-    console.log(msgObj.statusOfExt);
     response(msgObj);
   });
 })();
