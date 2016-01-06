@@ -77,26 +77,25 @@
   function keyUpHandler(e) {
     // e.currentTarget (if you're gonna do all of them together)
     // console.log('Event emitted by: ', e.target.id);
-    clearTimeout(keyupTimer);
-    keyupTimer = setTimeout(function() {
+    // clearTimeout(keyupTimer);
+    // keyupTimer = setTimeout(function() {
       var pNode = setParentNode(e.target);
       var parsedId = parseId(e.target.id);
       var startAt = document.querySelector('#' + testId(parseId(e.target.id))).value;
       if (parsedId[1] > 1) {
-        var promise = new Promise(function(resolve, reject) {
-          var startPoint = calculate(pNode).startInput(startAt);
-          resolve(startPoint);
-        });
-
-        promise.then(function(result) {
+        var startTime = calculate(pNode).startInput(startAt);
+        // var startTime = new Promise(function(resolve, reject) {
+        //   var startPoint = calculate(pNode).startInput(startAt);
+        //   resolve(startPoint);
+        // });
           calculate(pNode).calcStopTime();
-        })
-      }
+        }
+      // }
       if (parsedId[1] == 1) {
         calculate(pNode).startInput();
         calculate(pNode).calcStopTime();
       }
-    }, 300);
+    // }, 300);
   }
 
   function addAllHandlers() {
@@ -146,4 +145,22 @@
     }
     response(msgObj);
   });
+//
+//   function getResults(date){
+//   chrome.storage.local.get('days', function(item){
+//     item.days.forEach(function(v,i,a){
+//       if(v.date == date){
+//         // here v.resultsArray is the array we stored
+//         // we can remove any part of it such as
+//         v.days.splice(0,1);
+//         // or
+//         a.splice(i,1);
+//         // to remove the whole object, then simply set it again
+//         chrome.storage.local.set({'days':a});
+//       }
+//     });
+//   });
+// }
+//
+//   console.log(getResults('05_01_16'));
 })();
