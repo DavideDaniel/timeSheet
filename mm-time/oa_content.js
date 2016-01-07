@@ -91,41 +91,48 @@ var HoursObj = function(date) {
   this.internalHrs = getBillHrs($('.' + date).filter('.internal'));
 }
 
-var datesObj = [];
+var datesObjArr = [];
 
 for (var i = 0; i < datesArr.length; i++) {
   var hrsObj = new HoursObj(datesArr[i]);
-  datesObj.push(hrsObj);
+  datesObjArr.push(hrsObj);
 }
 
+chrome.storage.local.set({
+  'week': []
+})
+var restoredObjs = [];
 function saveDays() {
-
-  var obj = {};
-  for (var i = 0; i < datesObj.length; i++) {
-    var date = 'd'+datesObj[i].date;
-    obj[date] = datesObj[i];
-    debugger
-    chrome.storage.local.set(obj);
-  }
+  getDays().then(function(data) {
+      data = datesObjArr;
+      chrome.storage.local.set({
+        'week': data
+      });
+      console.log(restoredObjs,'saving week as:',data);
+    })
+    .catch(function(reason) {
+      console.error(reason);
+    });
 }
+
+
 saveDays();
 
+function getDays() {
+  var days = new Promise(function(resolve,reject){
+    chrome.storage.local.get('week', function(item) {
+      console.log('getting',item.week);
+      restoredObjs = item.week;
+      resolve(item.week)
+    });
 
-var restoredObjs = [];
-function getDays(date){
-  date = ('d'+date).toString();
-  debugger
-  chrome.storage.local.get(date, function(item){
-    debugger
-    restoredObjs.push(item);
   });
+  return days
 }
-
-getDays("04_01_16");
-
-// debugger
-// for (var i = 0; i < 5; i++) {
+// getDays().then(function(data) {
+//     restoredObjs = data;
 //
-//   restoredObjs.push(chrome.storage.local.get('day'+i));
-//
-// }
+//   })
+//   .catch(function(reason) {
+//     console.error(reason);
+//   });

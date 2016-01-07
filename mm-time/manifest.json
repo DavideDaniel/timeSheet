@@ -23,7 +23,7 @@
     "js": ["moment.js", "content.js"],
     "run_at": "document_end"
   }, {
-    "matches": ["*://www.openair.com/timesheet.pl?uid=*action=report*"],
+    "matches": ["*://www.openair.com/timesheet.pl?*action=report*"],
     "js": ["jquery-2.0.2.min.js", "oa_content.js"],
     "run_at": "document_end"
   }]

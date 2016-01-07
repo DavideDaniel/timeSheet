@@ -49,7 +49,7 @@
     var allInputs = document.querySelectorAll('span input');
     var filteredInputs = [];
     for (var i = 0; i < allInputs.length; i++) {
-      if (allInputs[i].title.match(/Hrs/) && allInputs[i].title.match(/Mon|Tue|Wed|Thu|Fri/)) {
+      if (allInputs[i].title.match(/Hrs/) && allInputs[i].title.match(/Mon|Tue|Wed|Thu|Fri|Sat|Sun/)) {
         filteredInputs.push(allInputs[i]);
       }
     }
@@ -77,24 +77,18 @@
   function keyUpHandler(e) {
     // e.currentTarget (if you're gonna do all of them together)
     // console.log('Event emitted by: ', e.target.id);
-    // clearTimeout(keyupTimer);
-    // keyupTimer = setTimeout(function() {
-      var pNode = setParentNode(e.target);
-      var parsedId = parseId(e.target.id);
-      var startAt = document.querySelector('#' + testId(parseId(e.target.id))).value;
-      if (parsedId[1] > 1) {
-        var startTime = calculate(pNode).startInput(startAt);
-        // var startTime = new Promise(function(resolve, reject) {
-        //   var startPoint = calculate(pNode).startInput(startAt);
-        //   resolve(startPoint);
-        // });
-          calculate(pNode).calcStopTime();
-        }
-      // }
-      if (parsedId[1] == 1) {
-        calculate(pNode).startInput();
-        calculate(pNode).calcStopTime();
-      }
+    var pNode = setParentNode(e.target);
+    var parsedId = parseId(e.target.id);
+    var startAt = document.querySelector('#' + testId(parseId(e.target.id))).value;
+    if (parsedId[1] > 1) {
+      var startTime = calculate(pNode).startInput(startAt);
+      calculate(pNode).calcStopTime();
+    }
+
+    if (parsedId[1] == 1) {
+      calculate(pNode).startInput();
+      calculate(pNode).calcStopTime();
+    }
     // }, 300);
   }
 
@@ -145,22 +139,57 @@
     }
     response(msgObj);
   });
-//
-//   function getResults(date){
-//   chrome.storage.local.get('days', function(item){
-//     item.days.forEach(function(v,i,a){
-//       if(v.date == date){
-//         // here v.resultsArray is the array we stored
-//         // we can remove any part of it such as
-//         v.days.splice(0,1);
-//         // or
-//         a.splice(i,1);
-//         // to remove the whole object, then simply set it again
-//         chrome.storage.local.set({'days':a});
-//       }
-//     });
-//   });
-// }
-//
-//   console.log(getResults('05_01_16'));
+  //
+
+  var restoredObjs = [];
+
+  function getDays() {
+    var days = new Promise(function(resolve, reject) {
+      chrome.storage.local.get('week', function(item) {
+        console.log('getting', item.week);
+        restoredObjs = item.week;
+        resolve(item.week)
+      });
+
+    });
+    return days
+  }
+
+  function dateFormatter(date) {
+    return date.replace(/_/g, '\/');
+  }
+
+  function dateChecker(date) {
+    return moment(date, ['DD/MM/YY']).format('DD/MM/YY');
+  }
+  getDays().then(function() {
+    var dates = checkDates();
+    for (var i = 0; i < restoredObjs.length; i++) {
+      dates[i] = dateChecker(dates[i]);
+      var date = '';
+      if (dates[i]) {
+        date = dates[i].replace(/\//g, '_');
+      }
+        if (date === restoredObjs[i].date) {
+          var timesFor = moment(dateFormatter(restoredObjs[i].date), ['DD/MM/YY']).format(' ddd, MMM DD');
+          console.log('OA matched times for:', timesFor);
+        }
+      // var objJSON = JSON.stringify(restoredObjs[i]);
+    }
+  });
+
+  function checkDates() {
+    var arrayOfDates = [];
+    var days = detectInputs();
+    for (var i = 0; i < 7; i++) {
+      var date = days[i].title.split('Hrs ')[1];
+      arrayOfDates.push(date);
+    }
+    debugger
+    arrayOfDates.push(arrayOfDates.shift());
+    arrayOfDates.push(arrayOfDates.shift());
+    return arrayOfDates
+  }
+
+  //   console.log(getResults('05_01_16'));
 })();
