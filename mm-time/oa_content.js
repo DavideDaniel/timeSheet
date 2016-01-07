@@ -83,7 +83,7 @@ function getBillHrs(arr) {
 }
 
 var HoursObj = function(date) {
-  this.date = date;
+  this.date = date.replace(/_/g, '\/');
   this.billableHours = getBillHrs($('.' + date).filter('.billable'));
   this.nonBillableHrs = getBillHrs($('.' + date).not('.billable, .vacation, .admin, .internal'));
   this.vacationHrs = getBillHrs($('.' + date).filter('.vacation'));

@@ -162,30 +162,84 @@
   function dateChecker(date) {
     return moment(date, ['DD/MM/YY']).format('DD/MM/YY');
   }
+
   getDays().then(function() {
-    var dates = checkDates();
+    var inputNodes = detectInputs();
+    var dates = checkDates(inputNodes);
     for (var i = 0; i < restoredObjs.length; i++) {
       dates[i] = dateChecker(dates[i]);
-      var date = '';
-      if (dates[i]) {
-        date = dates[i].replace(/\//g, '_');
-      }
-        if (date === restoredObjs[i].date) {
-          var timesFor = moment(dateFormatter(restoredObjs[i].date), ['DD/MM/YY']).format(' ddd, MMM DD');
+      // var date = '';
+      // if (dates[i]) {
+      //   date = dates[i].replace(/\//g, '_');
+      // }
+        if (dates[i] === restoredObjs[i].date) {
+
+          var timesFor = moment(restoredObjs[i].date, ['DD/MM/YY']).format(' ddd, MMM DD');
           console.log('OA matched times for:', timesFor);
+          for (var j = 0; j < inputNodes.length; j++) {
+            if(dates[i]===dateChecker(inputNodes[j].title)){
+
+              var pNode = setParentNode(inputNodes[j]);
+              var parsedId = parseId(inputNodes[j].id);
+              var startAt = document.querySelector('#' + testId(parseId(inputNodes[j].id))).value;
+
+              switch (parsedId[1]) {
+                case "1":
+                if(restoredObjs[i].billableHours>0){
+                inputNodes[j].value = restoredObjs[i].billableHours;
+                }
+                calculate(pNode).startInput();
+                calculate(pNode).calcStopTime();
+                  break;
+                case "2":
+                if(restoredObjs[i].internalHrs>0){
+                inputNodes[j].value = restoredObjs[i].internalHrs;
+                }
+                var startTime = calculate(pNode).startInput(startAt);
+                calculate(pNode).calcStopTime();
+                  break;
+                case "3":
+                var totalHrs = restoredObjs.adminHrs + restoredObjs.billableHours +restoredObjs.internalHrs+restoredObjs.nonBillableHrs;
+                if(totalHrs > 4){
+                inputNodes[j].value = 1;
+              }
+                var startTime = calculate(pNode).startInput(startAt);
+                calculate(pNode).calcStopTime();
+                  break;
+                case "4":
+                if(restoredObjs[i].adminHrs>0){
+                inputNodes[j].value = restoredObjs[i].adminHrs;
+                }
+                var startTime = calculate(pNode).startInput(startAt);
+                calculate(pNode).calcStopTime();
+                  break;
+                case "5":
+                if(restoredObjs[i].nonBillableHrs>0){
+                inputNodes[j].value = restoredObjs[i].nonBillableHrs;
+                }
+                var startTime = calculate(pNode).startInput(startAt);
+                calculate(pNode).calcStopTime();
+                  break;
+                default:
+                  break;
+              }
+              // calculate(pNode).startInput(startAt);
+              // calculate(pNode).calcStopTime();
+            }
+          }
         }
       // var objJSON = JSON.stringify(restoredObjs[i]);
     }
   });
 
-  function checkDates() {
+  function checkDates(days) {
     var arrayOfDates = [];
-    var days = detectInputs();
+    // var nodeObj = {};
     for (var i = 0; i < 7; i++) {
       var date = days[i].title.split('Hrs ')[1];
+      // nodeObj[date]=days[i];
       arrayOfDates.push(date);
     }
-    debugger
     arrayOfDates.push(arrayOfDates.shift());
     arrayOfDates.push(arrayOfDates.shift());
     return arrayOfDates
