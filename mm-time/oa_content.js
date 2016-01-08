@@ -10,9 +10,8 @@ $('tr[valign="top"]:contains("Day Total")').each(function(index, el) {
 });
 
 $('.dayDivider:last').addClass('lastDivider')
-
+$('.firstDayRow').nextUntil('.lastDivider').filter('tr[valign="top"]').not('.dayDivider').addClass('dayRow');
 function colorRows(){
-  $('.firstDayRow').nextUntil('.lastDivider').filter('tr[valign="top"]').not('.dayDivider').addClass('dayRow');
   // $('.dayDivider').removeClass('dayRow')
   $('.dayDivider').css('background-color', '#777');
   $('.firstDayRow').css('background-color', 'yellow');
@@ -44,29 +43,29 @@ $('.dayRow').each(function(index, el) {
   }
 
   if (getText(el.cells[11]) == 'Billable') {
-    $(this).css('background-color', 'pink');
+    // $(this).css('background-color', 'pink');
     billClass = 'billable';
   }
 
   if (getText(el.cells[7]) == 'Meetings \/ calls' || getText(el.cells[7]) == 'Comms \/ Email') {
-    $(this).css('background-color', 'yellow');
+    // $(this).css('background-color', 'yellow');
     internalClass = 'internal';
   }
 
   if (getText(el.cells[7]) == 'Personal admin') {
-    $(this).css('background-color', 'purple');
+    // $(this).css('background-color', 'purple');
     adminClass = 'admin';
   }
 
   if (getText(el.cells[7]) == 'Vacation' || getText(el.cells[7]) == 'Bank\/Statutory holiday') {
-    $(this).css('background-color', 'blue');
+    // $(this).css('background-color', 'blue');
     vacationClass = 'vacation';
   }
 
   $(el.cells).each(function(index, el) {
     var num = $(this).text();
     if ($.isNumeric(num)) {
-      $(this).css('background-color', 'green');
+      // $(this).css('background-color', 'green');
       $(this).addClass(billClass + ' mm_hours ' + dayClass + ' ' + vacationClass + ' ' + adminClass + ' ' + internalClass + '');
 
     }

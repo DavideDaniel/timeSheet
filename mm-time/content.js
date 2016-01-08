@@ -153,7 +153,7 @@
     var days = new Promise(function(resolve, reject) {
       chrome.storage.local.get('week', function(item) {
         console.log('getting', item.week);
-        restoredObjs = item.week;
+        // restoredObjs = item.week;
             resolve(item.week);
       });
 
@@ -170,17 +170,18 @@
   }
   function importOAhrs() {
     getDays().then(function(week) {
-
+      debugger
       var inputNodes = detectInputs();
       var dates = checkDates(inputNodes);
       for (var i = 0; i < week.length; i++) {
+        debugger
         dates[i] = dateChecker(dates[i]);
         // var date = '';
         // if (dates[i]) {
         //   date = dates[i].replace(/\//g, '_');
         // }
         if (dates[i] === week[i].date) {
-
+          debugger
           var timesFor = moment(week[i].date, ['DD/MM/YY']).format(' ddd, MMM DD');
           console.log('OA matched times for:', timesFor);
           for (var j = 0; j < inputNodes.length; j++) {
@@ -252,7 +253,6 @@
   }
 
   function checkDates(days) {
-    debugger
     var arrayOfDates = [];
     // var nodeObj = {};
     for (var i = 0; i < 7; i++) {
