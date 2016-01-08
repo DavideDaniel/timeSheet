@@ -11,13 +11,16 @@ $('tr[valign="top"]:contains("Day Total")').each(function(index, el) {
 
 $('.dayDivider:last').addClass('lastDivider')
 
-$('.firstDayRow').nextUntil('.lastDivider').filter('tr[valign="top"]').not('.dayDivider').addClass('dayRow');
-// $('.dayDivider').removeClass('dayRow')
-$('.dayDivider').css('background-color', '#777');
-$('.firstDayRow').css('background-color', 'yellow');
-$('.lastDayRow').css('background-color', 'pink');
+function colorRows(){
+  $('.firstDayRow').nextUntil('.lastDivider').filter('tr[valign="top"]').not('.dayDivider').addClass('dayRow');
+  // $('.dayDivider').removeClass('dayRow')
+  $('.dayDivider').css('background-color', '#777');
+  $('.firstDayRow').css('background-color', 'yellow');
+  $('.lastDayRow').css('background-color', 'pink');
 
-$('.dayRow').css('background-color', 'orange');
+  $('.dayRow').css('background-color', 'orange');
+}
+
 
 function getText(el) {
   if (typeof el.textContent == 'string') return el.textContent;

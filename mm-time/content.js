@@ -1,6 +1,7 @@
 ;
 (function() {
   console.log('active');
+  var keyupTimer = 0;
 
   function calculate(node) {
     return {
@@ -56,7 +57,7 @@
     return filteredInputs;
   }
 
-  var keyupTimer = 0;
+
 
   function parseId(id) {
     var num = id.split('B')[1];
@@ -137,6 +138,7 @@
         removeAllHandlers();
         msgObj.statusOfExt = "Imported & disabled";
         importOAhrs();
+        break
       default:
         console.error("Message: ", msg);
         break;
@@ -145,14 +147,14 @@
   });
   //
 
-  var restoredObjs = [];
+
 
   function getDays() {
     var days = new Promise(function(resolve, reject) {
       chrome.storage.local.get('week', function(item) {
         console.log('getting', item.week);
         restoredObjs = item.week;
-        resolve(item.week)
+            resolve(item.week);
       });
 
     });
@@ -166,21 +168,20 @@
   function dateChecker(date) {
     return moment(date, ['DD/MM/YY']).format('DD/MM/YY');
   }
-
   function importOAhrs() {
+    getDays().then(function(week) {
 
-    getDays().then(function() {
       var inputNodes = detectInputs();
       var dates = checkDates(inputNodes);
-      for (var i = 0; i < restoredObjs.length; i++) {
+      for (var i = 0; i < week.length; i++) {
         dates[i] = dateChecker(dates[i]);
         // var date = '';
         // if (dates[i]) {
         //   date = dates[i].replace(/\//g, '_');
         // }
-        if (dates[i] === restoredObjs[i].date) {
+        if (dates[i] === week[i].date) {
 
-          var timesFor = moment(restoredObjs[i].date, ['DD/MM/YY']).format(' ddd, MMM DD');
+          var timesFor = moment(week[i].date, ['DD/MM/YY']).format(' ddd, MMM DD');
           console.log('OA matched times for:', timesFor);
           for (var j = 0; j < inputNodes.length; j++) {
 
@@ -189,12 +190,12 @@
               var pNode = setParentNode(inputNodes[j]);
               var parsedId = parseId(inputNodes[j].id);
               var startAt = document.querySelector('#' + testId(parseId(inputNodes[j].id))).value;
-              
+
               switch (parsedId[1]) {
                 case "1":
                   inputNodes[j].value = 0;
-                  if (restoredObjs[i].billableHours > 0) {
-                    inputNodes[j].value = restoredObjs[i].billableHours;
+                  if (week[i].billableHours > 0) {
+                    inputNodes[j].value = week[i].billableHours;
 
                     calculate(pNode).startInput();
                     calculate(pNode).calcStopTime();
@@ -202,8 +203,8 @@
                   break;
                 case "2":
                 inputNodes[j].value = 0;
-                  if (restoredObjs[i].internalHrs > 0) {
-                    inputNodes[j].value = restoredObjs[i].internalHrs;
+                  if (week[i].internalHrs > 0) {
+                    inputNodes[j].value = week[i].internalHrs;
 
                     var startTime = calculate(pNode).startInput(startAt);
                     calculate(pNode).calcStopTime();
@@ -211,7 +212,7 @@
                   break;
                 case "3":
                 inputNodes[j].value = 0;
-                  var totalHrs = restoredObjs[i].adminHrs + restoredObjs[i].billableHours + restoredObjs[i].internalHrs + restoredObjs[i].nonBillableHrs;
+                  var totalHrs = week[i].adminHrs + week[i].billableHours + week[i].internalHrs + week[i].nonBillableHrs;
                   if (totalHrs > 4) {
                     inputNodes[j].value = 1;
 
@@ -221,8 +222,8 @@
                   break;
                 case "4":
                 inputNodes[j].value = 0;
-                  if (restoredObjs[i].adminHrs > 0) {
-                    inputNodes[j].value = restoredObjs[i].adminHrs;
+                  if (week[i].adminHrs > 0) {
+                    inputNodes[j].value = week[i].adminHrs;
 
                     var startTime = calculate(pNode).startInput(startAt);
                     calculate(pNode).calcStopTime();
@@ -230,8 +231,8 @@
                   break;
                 case "5":
                 inputNodes[j].value = 0;
-                  if (restoredObjs[i].nonBillableHrs > 0) {
-                    inputNodes[j].value = restoredObjs[i].nonBillableHrs;
+                  if (week[i].nonBillableHrs > 0) {
+                    inputNodes[j].value = week[i].nonBillableHrs;
 
                     var startTime = calculate(pNode).startInput(startAt);
                     calculate(pNode).calcStopTime();
@@ -245,12 +246,13 @@
             }
           }
         }
-        // var objJSON = JSON.stringify(restoredObjs[i]);
+        // var objJSON = JSON.stringify(week[i]);
       }
     });
   }
 
   function checkDates(days) {
+    debugger
     var arrayOfDates = [];
     // var nodeObj = {};
     for (var i = 0; i < 7; i++) {

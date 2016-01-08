@@ -1,7 +1,7 @@
 {
   "name": "MM-Time",
   "author": "David Daniel",
-  "version": "0.2",
+  "version": "0.3",
 
   "description": "Fill out timesheets with ease",
   "manifest_version": 2,
@@ -14,7 +14,7 @@
   },
 
   "permissions": [
-    "tabs", "*://global-ebusiness.oraclecorp.com/*", "*://www.openair.com/timesheet.pl?uid=*;action=report;timesheet_id=*;r=*",
+    "tabs", "*://global-ebusiness.oraclecorp.com/*", "*://www.openair.com/timesheet.pl?*action=report*",
     "storage"
   ],
 
