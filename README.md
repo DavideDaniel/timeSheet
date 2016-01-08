@@ -17,29 +17,29 @@
 * Clone or download the repo
 * Go to chrome://extensions/
 * Tick "Developer mode" checkbox
-* Click "Load unpacked extension..."
-* Select "MM-Time" folder
+* Drag drop the mm-time.crx file onto the chrome://extensions page
 
 #### Current buckets
+---
 Billable Time:
-Billable
+- Billable
 
 Internal Time:
-Comms/Email
-Meeting/Calls
+- Maxymiser Comms/Email
+- Maxymiser Meeting/Calls
 
 Admin Time:
-Maxymiser Personal Admin
+- Maxymiser Personal Admin
 
 Unassigned Time:
-Client + Non-Billable
-Maxymiser + not Internal Time + not Vacation + not Holiday
+- Client Non-Billable
+- Maxymiser + not Internal Time + not Vacation + not Holiday
 
 Vacation:
-Maxymiser Vacation
+- Maxymiser Vacation
 
 Holiday:
-Maxymiser Bank Holiday
+- Maxymiser Bank Holiday
 
 #### TODO
 ---
