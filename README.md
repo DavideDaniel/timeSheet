@@ -4,6 +4,11 @@
 * No more tedious figuring out military time conversions
 * Actually calculating based on present fields
 
+#### Updates
+---
+* Import hours from OA report of week via the extension
+* Enable & disable options
+
 #### To Use
 * Once installed and enabled, just create an Oracle timesheet, load up a template and instead of filling in the `Start` & `Stop` fields, fill in the `Hrs` you got from OpenAir.
 
@@ -15,10 +20,28 @@
 * Click "Load unpacked extension..."
 * Select "MM-Time" folder
 
+#### Current buckets
+Billable Time:
+Billable
+
+Internal Time:
+Comms/Email
+Meeting/Calls
+
+Admin Time:
+Maxymiser Personal Admin
+
+Unassigned Time:
+Client + Non-Billable
+Maxymiser + not Internal Time + not Vacation + not Holiday
+
+Vacation:
+Maxymiser Vacation
+
+Holiday:
+Maxymiser Bank Holiday
+
 #### TODO
 ---
-* Automating imports of hours from OA via the extension
-
-#### Updates
----
-* Added enable & disable buttons for more user control
+* Update UI
+* Option to customize buckets maybe
