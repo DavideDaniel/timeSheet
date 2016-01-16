@@ -57,8 +57,6 @@
     return filteredInputs;
   }
 
-
-
   function parseId(id) {
     var num = id.split('B')[1];
     var arrNums = num.split('_');
@@ -117,13 +115,13 @@
 
   chrome.runtime.onMessage.addListener(function(msg, sender, response) {
     var msgObj = {
-        statusOfExt: ''
-      }
-      // FOR SHOW PAGE ACTION IN URL
-      // if ((msg.from === 'popup') && (msg.subject === 'SetStatus')) {
-      //     msgObj.statusOfExt = 'Enabled';
-      //   response(msgObj);
-      // }
+      statusOfExt: ''
+    }
+    // FOR SHOW PAGE ACTION IN URL
+    // if ((msg.from === 'popup') && (msg.subject === 'SetStatus')) {
+    //     msgObj.statusOfExt = 'Enabled';
+    //   response(msgObj);
+    // }
 
     switch (msg.subject) {
       case 'enable':
@@ -147,14 +145,12 @@
   });
   //
 
-
-
   function getDays() {
     var days = new Promise(function(resolve, reject) {
       chrome.storage.local.get('week', function(item) {
         console.log('getting', item.week);
         // restoredObjs = item.week;
-            resolve(item.week);
+        resolve(item.week);
       });
 
     });
@@ -169,71 +165,89 @@
     return moment(date, ['DD/MM/YY']).format('DD/MM/YY');
   }
   function importOAhrs() {
+
     getDays().then(function(week) {
-      debugger
-      var inputNodes = detectInputs();
-      var dates = checkDates(inputNodes);
-      for (var i = 0; i < week.length; i++) {
-        debugger
-        dates[i] = dateChecker(dates[i]);
-        // var date = '';
-        // if (dates[i]) {
-        //   date = dates[i].replace(/\//g, '_');
-        // }
-        if (dates[i] === week[i].date) {
-          debugger
-          var timesFor = moment(week[i].date, ['DD/MM/YY']).format(' ddd, MMM DD');
+      // var inputNodes = ;
+      return {week: week, inputs: detectInputs()}
+    }).then(function(data) {
+      console.log(data);
+      var dates = checkDates(data.inputs);
+      return {week: data.week, dates: dates, inputs: data.inputs}
+    }).then(function(data) {
+      console.log(data);
+
+      for (var i = 0; i < data.week.length; i++) {
+        console.log(data.dates[i]);
+        data.dates[i] = dateChecker(data.dates[i]);
+        if (data.dates[i] === data.week[i].date) {
+          console.log(data.dates[i]);
+          var timesFor = moment(data.week[i].date, ['DD/MM/YY']).format(' ddd, MMM DD');
           console.log('OA matched times for:', timesFor);
-          for (var j = 0; j < inputNodes.length; j++) {
+        }
+      }
+      return {week: data.week, dates: data.dates, inputs: data.inputs}
+    }).then(function(data) {
+      console.log(data);
 
-            if (dates[i] === dateChecker(inputNodes[j].title)) {
+      // for (var j = 0; j < data.inputs.length; j++) {
+      //
+      //   console.log(data.dates[i], data.inputs[j]);
+      //
+      //   if (data.dates[i] === dateChecker(data.inputs[j].title)) {
 
-              var pNode = setParentNode(inputNodes[j]);
-              var parsedId = parseId(inputNodes[j].id);
-              var startAt = document.querySelector('#' + testId(parseId(inputNodes[j].id))).value;
+      for (var w = 0; w < data.week.length; w++) {
+
+        if (data.dates[w] === data.week[w].date) {
+
+          for (var j = 0; j < data.inputs.length; j++) {
+            if (data.dates[w] === dateChecker(data.inputs[j].title)) {
+
+              var pNode = setParentNode(data.inputs[j]);
+              var parsedId = parseId(data.inputs[j].id);
+              var startAt = document.querySelector('#' + testId(parseId(data.inputs[j].id))).value;
 
               switch (parsedId[1]) {
                 case "1":
-                  inputNodes[j].value = 0;
-                  if (week[i].billableHours > 0) {
-                    inputNodes[j].value = week[i].billableHours;
+                  data.inputs[j].value = 0;
+                  if (data.week[w].billableHours > 0) {
+                    data.inputs[j].value = data.week[w].billableHours;
 
                     calculate(pNode).startInput();
                     calculate(pNode).calcStopTime();
                   }
                   break;
                 case "2":
-                inputNodes[j].value = 0;
-                  if (week[i].internalHrs > 0) {
-                    inputNodes[j].value = week[i].internalHrs;
+                  data.inputs[j].value = 0;
+                  if (data.week[w].internalHrs > 0) {
+                    data.inputs[j].value = data.week[w].internalHrs;
 
                     var startTime = calculate(pNode).startInput(startAt);
                     calculate(pNode).calcStopTime();
                   }
                   break;
                 case "3":
-                inputNodes[j].value = 0;
-                  var totalHrs = week[i].adminHrs + week[i].billableHours + week[i].internalHrs + week[i].nonBillableHrs;
+                  data.inputs[j].value = 0;
+                  var totalHrs = data.week[w].adminHrs + data.week[w].billableHours + data.week[w].internalHrs + data.week[w].nonBillableHrs;
                   if (totalHrs > 4) {
-                    inputNodes[j].value = 1;
+                    data.inputs[j].value = 1;
 
                     var startTime = calculate(pNode).startInput(startAt);
                     calculate(pNode).calcStopTime();
                   }
                   break;
                 case "4":
-                inputNodes[j].value = 0;
-                  if (week[i].adminHrs > 0) {
-                    inputNodes[j].value = week[i].adminHrs;
+                  data.inputs[j].value = 0;
+                  if (data.week[w].adminHrs > 0) {
+                    data.inputs[j].value = data.week[w].adminHrs;
 
                     var startTime = calculate(pNode).startInput(startAt);
                     calculate(pNode).calcStopTime();
                   }
                   break;
                 case "5":
-                inputNodes[j].value = 0;
-                  if (week[i].nonBillableHrs > 0) {
-                    inputNodes[j].value = week[i].nonBillableHrs;
+                  data.inputs[j].value = 0;
+                  if (data.week[w].nonBillableHrs > 0) {
+                    data.inputs[j].value = data.week[w].nonBillableHrs;
 
                     var startTime = calculate(pNode).startInput(startAt);
                     calculate(pNode).calcStopTime();
@@ -247,9 +261,17 @@
             }
           }
         }
-        // var objJSON = JSON.stringify(week[i]);
+
       }
+    }, function(error) {
+      console.log('CAUGHT::', error);
     });
+
+    // var date = '';
+    // if (data.dates[i]) {
+    //   date = dates[i].replace(/\//g, '_');
+    // }
+
   }
 
   function checkDates(days) {
