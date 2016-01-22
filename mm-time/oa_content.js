@@ -79,7 +79,7 @@ $('.dayRow').each(function(index, el) {
     var num = $(this).text();
     if ($.isNumeric(num)) {
       // $(this).css('background-color', 'green');
-      $(this).addClass(billClass + ' mm_hours ' + dayClass + ' '+holidayClass+' '+adminClass + ' ' + internalClass + '');
+      $(this).addClass(billClass + ' mm_hours ' + dayClass + ' '+holidayClass+' '+vacationClass+' '+adminClass + ' ' + internalClass + '');
 
     }
   });

@@ -1,6 +1,7 @@
 ;
 (function() {
   console.log('active');
+
   var keyupTimer = 0;
 
   function calculate(node) {
@@ -46,9 +47,15 @@
     return input.closest('.x1u').parentElement.closest('.x1u');
   }
 
-  function createTemplate(){
-
+  function createTemplate(row,task,type){
+    
+    fillOutProject(row);
+    fillOutTasks(row,task);
+    fillOutTypes(row,type);
+    fillOutCountry(row);
+    fillOutState(row);
   }
+  
 
   function fillOutProject(row){
     // var projectInputs = document.querySelectorAll('span>input[title="Project"]');
@@ -56,23 +63,29 @@
     //   console.log(projectInputs[i].value);
     // };
     // '300484328-1ZK1- OMC MX Admin US'
-    $(row).find('span>input[title="Project"]').val('300484328-1ZK1- OMC MX Admin US')
+    
+    $(row).find('span>input[title="Project"]').val('300484328-1ZK1- OMC MX Admin US');
   }
 
-  function fillOutTasks(){
+  function fillOutTasks(row,task){
     // '16 BT' '02 IN' '15 LU' '01 AD' '08 UA' '06 VA' '05 SI' '04 HO' '11 MK'
+    
+    $(row).find('span>input[title="Task"]').val(task);
   }
 
-  function fillOutTypes(){
+  function fillOutTypes(row,type){
     // 'LABOR - Straight Time' 'Lunch Hours' 'Public Holiday Not Worked' 'Vacation' 'Sick Pay'
+    $(row).find('span>input[title="Type"]').val(type);
   }
 
-  function fillOutLocation(){
+  function fillOutCountry(row){
     // 'United States'
+    $(row).find('span>input[title="Work Location Country"]').val('United States');
   }
 
-  function fillOutState(){
+  function fillOutState(row){
     // 'New York'
+    $(row).find('span>input[title="Work Location State/Province"]').val('New York');
   }
 
   function detectInputs() {
@@ -227,7 +240,13 @@
 
       for (var w = 0; w < data.week.length; w++) {
         var holidayHours = data.week[w].holidayHrs;
+        var vacationHours = data.week[w].vacationHrs;
         var totalHours = data.week[w].totalHrs;
+        var billedHours = data.week[w].billableHours;
+        var nextBilledHrs = 0;
+        if (billedHours > 4) {
+          billedHours = nextBilledHrs = billedHours/2
+        } 
 
         if (data.dates[w] === data.week[w].date) {
 
@@ -238,6 +257,7 @@
               var pRow = $(pNode).closest('tr');
               var parsedId = parseId(data.inputs[j].id);
               var startAt = document.querySelector('#' + testId(parseId(data.inputs[j].id))).value;
+              var hoursNow = 0;
 
               if (holidayHours > 1){
                 console.log(data.inputs[j].title);
@@ -245,62 +265,87 @@
 
               switch (parsedId[1]) {
                 case "1":
-                  data.inputs[j].value = 0;
-                  if (data.week[w].billableHours > 0) {
-                    data.inputs[j].value = data.week[w].billableHours;
-
+                 // data.inputs[j].value = 0;
+                  if (data.week[w].internalHrs > 0) {
+                    hoursNow += data.inputs[j].value = data.week[w].internalHrs;
+                    createTemplate(pRow,'02 IN', 'LABOR - Straight Time');
                     calculate(pNode).startInput();
                     calculate(pNode).calcStopTime();
                   }
                   break;
                 case "2":
-                  data.inputs[j].value = 0;
-                  if (data.week[w].internalHrs > 0) {
-                    data.inputs[j].value = data.week[w].internalHrs;
-
-                    var startTime = calculate(pNode).startInput(startAt);
+                   // data.inputs[j].value = 0;
+                  if (billedHours > 0) {
+                    data.inputs[j].value = billedHours;
+                    createTemplate(pRow,'16 BT', 'LABOR - Straight Time');
+                    calculate(pNode).startInput(startAt);
                     calculate(pNode).calcStopTime();
                   }
                   break;
-                case "3":
-                  data.inputs[j].value = 0;
-                  // var totalHrs = data.week[w].adminHrs + data.week[w].billableHours + data.week[w].internalHrs + data.week[w].nonBillableHrs;
-                    debugger
-                  if (holidayHours === 0 && totalHours > 4) {
+                  case "3":
+                 // data.inputs[j].value = 0;  
+                  if (holidayHours === 0 && totalHours > 3) {
                     data.inputs[j].value = 1;
-                    
-                    var startTime = calculate(pNode).startInput(startAt);
+                    createTemplate(pRow,'15 LU', 'Lunch Hours');
+                    calculate(pNode).startInput(startAt);
                     calculate(pNode).calcStopTime();
                   }
                   break;
                 case "4":
-                  data.inputs[j].value = 0;
-                  if (data.week[w].adminHrs > 0) {
-                    data.inputs[j].value = data.week[w].adminHrs;
-
-                    var startTime = calculate(pNode).startInput(startAt);
+                  // data.inputs[j].value = 0;
+                  if (nextBilledHrs > 0) {
+                    data.inputs[j].value = nextBilledHrs;
+                    createTemplate(pRow,'16 BT', 'LABOR - Straight Time');
+                    calculate(pNode).startInput(startAt);
                     calculate(pNode).calcStopTime();
                   }
+                  
                   break;
                 case "5":
-                  data.inputs[j].value = 0;
-                  if (data.week[w].nonBillableHrs > 0) {
-                    data.inputs[j].value = data.week[w].nonBillableHrs;
+                 // data.inputs[j].value = 0;
+                  if (data.week[w].adminHrs > 0) {
 
-                    var startTime = calculate(pNode).startInput(startAt);
+                    hoursNow += data.inputs[j].value = data.week[w].adminHrs;
+                    createTemplate(pRow,'01 AD', 'LABOR - Straight Time');
+                    calculate(pNode).startInput(startAt);
                     calculate(pNode).calcStopTime();
+
+                  }
+                  
+                  break;
+                case "6":
+                    
+                  if (vacationHours >= 8) {
+                    debugger
+                    data.inputs[j].value = vacationHours;
+                    createTemplate(pRow,'06 VA', 'Vacation');
+                    // calculate(pNode).startInput(startAt);
+                    // calculate(pNode).calcStopTime();
                   }
                   break;
-                  case "6":
-                  data.inputs[j].value = 0;
+                  case "7":
+                  
+                
                   if (holidayHours >= 8) {
                     debugger
-                    data.inputs[j].value = data.week[w].holidayHrs;
-                    fillOutProject(pRow);
-                    calculate(pNode).startInput();
+                    data.inputs[j].value = holidayHours;
+                    createTemplate(pRow,'04 HO', 'Public Holiday Not Worked');
+                    // calculate(pNode).startInput(startAt);
+                    // calculate(pNode).calcStopTime();
+                  }
+
+                  break; 
+                  case "8":
+                    
+                  if (data.week[w].nonBillableHrs > 0) {
+                    data.inputs[j].value = data.week[w].nonBillableHrs;
+                    createTemplate(pRow,'08 UA', 'LABOR - Straight Time');
+                    calculate(pNode).startInput(startAt);
                     calculate(pNode).calcStopTime();
                   }
-                  break;
+
+                  break
+
                 default:
                   // data.inputs[j].value = 0;
                   break;
