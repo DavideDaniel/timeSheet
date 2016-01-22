@@ -10,25 +10,33 @@
         line-height: 1em;
         font: Helvetica, Arial, sans-serif;
       }
+      ol > li {
+
+        /*list-style-position: outside;*/
+      }
     </style>
   </head>
   <body>
     <h3>Disabled by default...</h3>
     <h4 id="statusExt"></h4>
-    <li>Row 1 Internal time</li>
-    <li>Row 2 Billable time</li>
-    <li>Row 3 Lunch ~ 12-2</li>
-    <li>Row 4 Billable time remainder</li>
-    <li>Row 5 Admin (filling out time sheets/expense reports)</li>
-    <li>Row 6 Holiday</li>
-    <li>Row 7 Vacation</li>
-    <li>Row 8 Unassigned time</li>
     <button id="enableExt">Enable</button>
     <button id="disableExt">Disable</button>
     <button id="importOA">Import</button>
+
+    <h4>Row format for templates</h4>
+    <ol>
+      <li>Internal time</li>
+      <li>Billable time</li>
+      <li>Lunch estimated ~ 12-2</li>
+      <li>Billable time remainder</li>
+      <li>Admin (time sheets/expense reports)</li>
+      <li>Holiday</li>
+      <li>Vacation</li>
+      <li>Unassigned time</li>
+    </ol>
+
     <h4>Updates</h4>
     <li>Importing from OA per latest email from Goose</li>
-    <li>Vacation and Holiday times now imported - Add another row after importing or load a template with 8 rows</li>
-    <!-- <li>Importing from OpenAir</li> -->
+    <li>Vacation and Holiday times now imported - If you're not seeing these times, add another row after importing or load a template with 8 rows</li>
   </body>
 </html>

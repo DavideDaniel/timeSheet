@@ -54,6 +54,12 @@
                 subject: 'import'
               },
               setStatus);
+              chrome.tabs.sendMessage(
+                tabs[0].id, {
+                  from: 'popup',
+                  subject: 'enable'
+                },
+                setStatus);
           }
         });
     });
