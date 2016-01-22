@@ -6,11 +6,17 @@
 
 #### Updates
 ---
-* Import hours from OA report of week via the extension
-* Enable & disable options
+* Vacation and holiday buckets added
+*
+* Importing hours from OA report of week via the extension - now based on consensus around billable hours
+* Import button now enables auto calculation of military times as well
+
 
 #### To Use
 * Once installed and enabled, just create an Oracle timesheet, load up a template and instead of filling in the `Start` & `Stop` fields, fill in the `Hrs` you got from OpenAir.
+* To import hours from OA
+  - Open up your week's timesheet & go to the report for that week
+  - Navigate to your Oracle time sheet on another tab, then open the extension popup and click import
 
 #### Installation
 ---
@@ -21,25 +27,32 @@
 
 #### Current buckets
 ---
-Billable Time:
-- Billable
 
-Internal Time:
-- Maxymiser Comms/Email
-- Maxymiser Meeting/Calls
+|Billable Time |
+|----
+| Billable
+| Client - Non-Billable
 
-Admin Time:
-- Maxymiser Personal Admin
+|Internal Time:
+|---
+|Maxymiser Comms/Email
+|Maxymiser Meeting/Calls
 
-Unassigned Time:
-- Client Non-Billable
-- Maxymiser + not Internal Time + not Vacation + not Holiday
+|Admin Time:
+|---
+|Maxymiser Personal Admin
 
-Vacation:
-- Maxymiser Vacation
+|Unassigned Time:
+|---
+|Maxymiser + not Internal Time + not Vacation + not Holiday
 
-Holiday:
-- Maxymiser Bank Holiday
+|Vacation:
+|---
+|Maxymiser Vacation
+
+|Holiday:
+|---
+|Maxymiser Bank Holiday
 
 #### TODO
 ---
