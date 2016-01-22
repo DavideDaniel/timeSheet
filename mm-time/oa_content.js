@@ -40,6 +40,7 @@ $('.dayRow').each(function(index, el) {
   var internalClass = '';
   var adminClass = '';
   var vacationClass = '';
+  var holidayClass = '';
 
   if ($(el).hasClass('firstDayRow')) {
     dayClass = getText(el.cells[1]).replace(/\//g, '_');
@@ -70,15 +71,15 @@ $('.dayRow').each(function(index, el) {
 
   if (getText(el.cells[7]) == 'Bank\/Statutory holiday') {
     $(this).css('background-color', 'green');
-    // holidayClass = 'holiday';
-    $(this).addClass('holiday');
+    holidayClass = 'holiday';
+    // $(this).addClass('holiday');
   }
 
   $(el.cells).each(function(index, el) {
     var num = $(this).text();
     if ($.isNumeric(num)) {
       // $(this).css('background-color', 'green');
-      $(this).addClass(billClass + ' mm_hours ' + dayClass + ' ' + adminClass + ' ' + internalClass + '');
+      $(this).addClass(billClass + ' mm_hours ' + dayClass + ' '+holidayClass+' '+adminClass + ' ' + internalClass + '');
 
     }
   });

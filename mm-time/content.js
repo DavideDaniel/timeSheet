@@ -206,10 +206,10 @@
       console.log(data);
 
       for (var i = 0; i < data.week.length; i++) {
-        console.log(data.dates[i]);
+        // console.log(data.dates[i]);
         data.dates[i] = dateChecker(data.dates[i]);
         if (data.dates[i] === data.week[i].date) {
-          console.log(data.dates[i]);
+          // console.log(data.dates[i]);
           var timesFor = moment(data.week[i].date, ['DD/MM/YY']).format(' ddd, MMM DD');
           console.log('OA matched times for:', timesFor);
         }
@@ -227,6 +227,7 @@
 
       for (var w = 0; w < data.week.length; w++) {
         var holidayHours = data.week[w].holidayHrs;
+        var totalHours = data.week[w].totalHrs;
 
         if (data.dates[w] === data.week[w].date) {
 
@@ -237,6 +238,10 @@
               var pRow = $(pNode).closest('tr');
               var parsedId = parseId(data.inputs[j].id);
               var startAt = document.querySelector('#' + testId(parseId(data.inputs[j].id))).value;
+
+              if (holidayHours > 1){
+                console.log(data.inputs[j].title);
+              }
 
               switch (parsedId[1]) {
                 case "1":
@@ -260,9 +265,10 @@
                 case "3":
                   data.inputs[j].value = 0;
                   // var totalHrs = data.week[w].adminHrs + data.week[w].billableHours + data.week[w].internalHrs + data.week[w].nonBillableHrs;
-                  if (data.week[w].totalHrs > 4 && holidayHours === 0) {
+                    debugger
+                  if (holidayHours === 0 && totalHours > 4) {
                     data.inputs[j].value = 1;
-
+                    
                     var startTime = calculate(pNode).startInput(startAt);
                     calculate(pNode).calcStopTime();
                   }
@@ -336,7 +342,7 @@
     for (var i = week.length - 1; i >= 0; i--) {
       var day = week[i]
       if (day.vacationHrs >= 8 || day.holidayHrs >= 8){
-        console.log('use vacation template')
+        // console.log('use vacation template')
       }
       if (day.holidayHrs < 8 && day.totalHrs >= 4) {
         console.log('use lunch standard day template');
