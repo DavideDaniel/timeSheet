@@ -314,22 +314,32 @@
 
                   break;
                 case "6":
+                if($(pRow).find('span>input[title="Task"]').val()==='04 HO'){
+                  data.inputs[j].value = 0;
+                  calculate(pNode).startInput(startAt);
+                  calculate(pNode).calcStopTime();
+                }
+                  if (holidayHours >= 8) {
+
+                    data.inputs[j].value = holidayHours;
+                    createTemplate(pRow, '04 HO', 'Public Holiday Not Worked');
+                    calculate(pNode).startInput(startAt);
+                    calculate(pNode).calcStopTime();
+                  }
+
+                  break;
+                case "7":
+                if($(pRow).find('span>input[title="Task"]').val()==='06 VA'){
+                  data.inputs[j].value = 0;
+                  calculate(pNode).startInput(startAt);
+                  calculate(pNode).calcStopTime();
+                }
                   if (vacationHours >= 1) {
-                    
+
                     data.inputs[j].value = vacationHours;
                     createTemplate(pRow, '06 VA', 'Vacation');
                     calculate(pNode).startInput(startAt);
                     calculate(pNode).calcStopTime();
-                  }
-                  break;
-                case "7":
-
-                  if (holidayHours >= 8) {
-                    
-                    data.inputs[j].value = holidayHours;
-                    createTemplate(pRow, '04 HO', 'Public Holiday Not Worked');
-                    // calculate(pNode).startInput(startAt);
-                    // calculate(pNode).calcStopTime();
                   }
 
                   break;
