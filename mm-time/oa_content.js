@@ -70,14 +70,15 @@ $('.dayRow').each(function(index, el) {
 
   if (getText(el.cells[7]) == 'Bank\/Statutory holiday') {
     $(this).css('background-color', 'green');
-    holidayClass = 'holiday';
+    // holidayClass = 'holiday';
+    $(this).addClass('holiday');
   }
 
   $(el.cells).each(function(index, el) {
     var num = $(this).text();
     if ($.isNumeric(num)) {
       // $(this).css('background-color', 'green');
-      $(this).addClass(billClass + ' mm_hours ' + dayClass + ' ' + vacationClass + ' ' + holidayClass + ' ' + adminClass + ' ' + internalClass + '');
+      $(this).addClass(billClass + ' mm_hours ' + dayClass + ' ' + adminClass + ' ' + internalClass + '');
 
     }
   });
@@ -103,7 +104,7 @@ function getBillHrs(arr) {
 var HoursObj = function(date) {
   this.date = date.replace(/_/g, '\/');
   this.billableHours = getBillHrs($('.' + date).filter('.billable'));
-  this.nonBillableHrs = getBillHrs($('.' + date).not('.billable, .vacation, .holiday, .admin, .internal'));
+  this.nonBillableHrs = getBillHrs($('.' + date).not('.dayDivider, .billable, .vacation, .holiday, .admin, .internal'));
   this.vacationHrs = getBillHrs($('.' + date).filter('.vacation'));
   this.holidayHrs = getBillHrs($('.' + date).filter('.holiday'));
   this.adminHrs = getBillHrs($('.' + date).filter('.admin'));

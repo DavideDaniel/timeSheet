@@ -50,12 +50,13 @@
 
   }
 
-  function fillOutProjects(){
-    var projectInputs = document.querySelectorAll('span>input[title="Project"]');
-    for (var i = projectInputs.length - 1; i >= 0; i--) {
-      console.log(projectInputs[i].value);
-    };
+  function fillOutProject(row){
+    // var projectInputs = document.querySelectorAll('span>input[title="Project"]');
+    // for (var i = projectInputs.length - 1; i >= 0; i--) {
+    //   console.log(projectInputs[i].value);
+    // };
     // '300484328-1ZK1- OMC MX Admin US'
+    $(row).find('span>input[title="Project"]').val('300484328-1ZK1- OMC MX Admin US')
   }
 
   function fillOutTasks(){
@@ -79,7 +80,7 @@
     var filteredInputs = [];
     for (var i = 0; i < allInputs.length; i++) {
       if (allInputs[i].title.match(/Hrs/) && allInputs[i].title.match(/Mon|Tue|Wed|Thu|Fri|Sat|Sun/)) {
-        filteredInputs.push(allInputs[i]);
+        filteredInputs.push(allInputs[i]);0
       }
     }
     return filteredInputs;
@@ -225,6 +226,7 @@
       //   if (data.dates[i] === dateChecker(data.inputs[j].title)) {
 
       for (var w = 0; w < data.week.length; w++) {
+        var holidayHours = data.week[w].holidayHrs;
 
         if (data.dates[w] === data.week[w].date) {
 
@@ -232,6 +234,7 @@
             if (data.dates[w] === dateChecker(data.inputs[j].title)) {
 
               var pNode = setParentNode(data.inputs[j]);
+              var pRow = $(pNode).closest('tr');
               var parsedId = parseId(data.inputs[j].id);
               var startAt = document.querySelector('#' + testId(parseId(data.inputs[j].id))).value;
 
@@ -256,8 +259,8 @@
                   break;
                 case "3":
                   data.inputs[j].value = 0;
-                  var totalHrs = data.week[w].adminHrs + data.week[w].billableHours + data.week[w].internalHrs + data.week[w].nonBillableHrs;
-                  if (totalHrs > 4) {
+                  // var totalHrs = data.week[w].adminHrs + data.week[w].billableHours + data.week[w].internalHrs + data.week[w].nonBillableHrs;
+                  if (data.week[w].totalHrs > 4 && holidayHours === 0) {
                     data.inputs[j].value = 1;
 
                     var startTime = calculate(pNode).startInput(startAt);
@@ -282,7 +285,18 @@
                     calculate(pNode).calcStopTime();
                   }
                   break;
+                  case "6":
+                  data.inputs[j].value = 0;
+                  if (holidayHours >= 8) {
+                    debugger
+                    data.inputs[j].value = data.week[w].holidayHrs;
+                    fillOutProject(pRow);
+                    calculate(pNode).startInput();
+                    calculate(pNode).calcStopTime();
+                  }
+                  break;
                 default:
+                  // data.inputs[j].value = 0;
                   break;
               }
               // calculate(pNode).startInput(startAt);
@@ -317,7 +331,18 @@
   }
 
   function breakUpHrs(hrs){
-    debugger
+    
+    var week = hrs.week
+    for (var i = week.length - 1; i >= 0; i--) {
+      var day = week[i]
+      if (day.vacationHrs >= 8 || day.holidayHrs >= 8){
+        console.log('use vacation template')
+      }
+      if (day.holidayHrs < 8 && day.totalHrs >= 4) {
+        console.log('use lunch standard day template');
+      }
+      // if (day.totalHrs >= 4 && day.) {};
+    }
   }
 
   //   console.log(getResults('05_01_16'));
