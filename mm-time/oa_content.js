@@ -36,7 +36,8 @@ $('.firstDayRow').each(function(i, e) {
   var dateClass = getText(e.cells[1]).replace(/\//g, '_');
   $('.dayDivider').eq(i).addClass(dateClass);
 });
-$('.dayRow').each(function(index, el) {
+
+$.when($('.dayRow').each(function(index, el) {
   var billClass = '';
   var internalClass = '';
   var adminClass = '';
@@ -55,13 +56,18 @@ $('.dayRow').each(function(index, el) {
     billClass = 'billable';
   }
 
-  if (getText(el.cells[7]) == 'Meetings \/ calls' || getText(el.cells[7]) == 'Comms \/ Email') {
-    // $(this).css('background-color', 'yellow');
+  // if (getText(el.cells[7]) == 'Meetings \/ calls' || getText(el.cells[7]) == 'Comms \/ Email') {
+  //   // $(this).css('background-color', 'yellow');
+  //   internalClass = 'internal';
+  // }
+
+  if (getText(el.cells[3]) == 'Maxymiser') {
+    $(this).css('background-color', 'yellow');
     internalClass = 'internal';
   }
 
   if (getText(el.cells[7]) == 'Personal admin') {
-    // $(this).css('background-color', 'purple');
+    $(this).css('background-color', 'purple');
     adminClass = 'admin';
   }
 
@@ -84,6 +90,15 @@ $('.dayRow').each(function(index, el) {
 
     }
   });
+
+})).then(function() {
+  $('.internal').each(function(index, el) {
+    if ($(el).hasClass('holiday') || $(el).hasClass('vacation') || $(el).hasClass('admin')) {
+      $(el).removeClass('internal');
+    }
+  });
+}, function(err) {
+  console.error(err);
 });
 
 function getHours(el) {
