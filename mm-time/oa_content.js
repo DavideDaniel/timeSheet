@@ -1,7 +1,8 @@
-$('.noBorder [valign="bottom"]').next().next().addClass('firstDayRow dayRow')
+$('.noBorder [valign="bottom"]').next().next().addClass('firstDayRow dayRow');
 $('tr[valign="top"]:contains("Day Total")').each(function(index, el) {
   if (index < $('tr[valign="top"]:contains("Day Total")').length) {
     $(el).addClass('dayDivider');
+    
     if (index < $('tr[valign="top"]:contains("Day Total")').length - 1) {
       $(el).next().next().addClass('firstDayRow dayRow');
     }
@@ -13,13 +14,13 @@ $('.dayDivider:last').addClass('lastDivider')
 $('.firstDayRow').nextUntil('.lastDivider').filter('tr[valign="top"]').not('.dayDivider').addClass('dayRow');
 function colorRows(){
   // $('.dayDivider').removeClass('dayRow')
-  $('.dayDivider').css('background-color', '#777');
-  $('.firstDayRow').css('background-color', 'yellow');
-  $('.lastDayRow').css('background-color', 'pink');
+  $('.dayDivider').css('background-color', 'teal');
+  // $('.firstDayRow').css('background-color', 'yellow');
+  // $('.lastDayRow').css('background-color', 'pink');
 
-  $('.dayRow').css('background-color', 'orange');
+  // $('.dayRow').css('background-color', 'orange');
 }
-
+colorRows();
 
 function getText(el) {
   if (typeof el.textContent == 'string') return el.textContent;
@@ -29,6 +30,11 @@ function getText(el) {
 var datesArr = [];
 var dayClass = '';
 
+
+$('.firstDayRow').each(function(i,e){
+  var dateClass = getText(e.cells[1]).replace(/\//g, '_');
+$('.dayDivider').eq(i).addClass(dateClass);
+});
 $('.dayRow').each(function(index, el) {
   var billClass = '';
   var internalClass = '';
@@ -42,8 +48,8 @@ $('.dayRow').each(function(index, el) {
     }
   }
 
-  if (getText(el.cells[11]) == 'Billable') {
-    // $(this).css('background-color', 'pink');
+  if (getText(el.cells[3]) != 'Maxymiser') {
+    $(this).css('background-color', 'pink');
     billClass = 'billable';
   }
 
@@ -57,16 +63,21 @@ $('.dayRow').each(function(index, el) {
     adminClass = 'admin';
   }
 
-  if (getText(el.cells[7]) == 'Vacation' || getText(el.cells[7]) == 'Bank\/Statutory holiday') {
-    // $(this).css('background-color', 'blue');
+  if (getText(el.cells[7]) == 'Vacation') {
+    $(this).css('background-color', 'blue');
     vacationClass = 'vacation';
+  }
+
+  if (getText(el.cells[7]) == 'Bank\/Statutory holiday') {
+    $(this).css('background-color', 'green');
+    holidayClass = 'holiday';
   }
 
   $(el.cells).each(function(index, el) {
     var num = $(this).text();
     if ($.isNumeric(num)) {
       // $(this).css('background-color', 'green');
-      $(this).addClass(billClass + ' mm_hours ' + dayClass + ' ' + vacationClass + ' ' + adminClass + ' ' + internalClass + '');
+      $(this).addClass(billClass + ' mm_hours ' + dayClass + ' ' + vacationClass + ' ' + holidayClass + ' ' + adminClass + ' ' + internalClass + '');
 
     }
   });
@@ -81,16 +92,23 @@ function getBillHrs(arr) {
   for (var i = 0; i < arr.length; i++) {
     hours += getHours(arr[i]);
   }
+  
+  if(arr.hasClass('dayDivider')){
+    return parseFloat(arr.text().match(/([\d.])+/m)[0])
+  }
+
   return hours;
 }
 
 var HoursObj = function(date) {
   this.date = date.replace(/_/g, '\/');
   this.billableHours = getBillHrs($('.' + date).filter('.billable'));
-  this.nonBillableHrs = getBillHrs($('.' + date).not('.billable, .vacation, .admin, .internal'));
+  this.nonBillableHrs = getBillHrs($('.' + date).not('.billable, .vacation, .holiday, .admin, .internal'));
   this.vacationHrs = getBillHrs($('.' + date).filter('.vacation'));
+  this.holidayHrs = getBillHrs($('.' + date).filter('.holiday'));
   this.adminHrs = getBillHrs($('.' + date).filter('.admin'));
   this.internalHrs = getBillHrs($('.' + date).filter('.internal'));
+  this.totalHrs = getBillHrs($('.'+ date).filter('.dayDivider'));
 }
 
 var datesObjArr = [];

@@ -46,6 +46,34 @@
     return input.closest('.x1u').parentElement.closest('.x1u');
   }
 
+  function createTemplate(){
+
+  }
+
+  function fillOutProjects(){
+    var projectInputs = document.querySelectorAll('span>input[title="Project"]');
+    for (var i = projectInputs.length - 1; i >= 0; i--) {
+      console.log(projectInputs[i].value);
+    };
+    // '300484328-1ZK1- OMC MX Admin US'
+  }
+
+  function fillOutTasks(){
+    // '16 BT' '02 IN' '15 LU' '01 AD' '08 UA' '06 VA' '05 SI' '04 HO' '11 MK'
+  }
+
+  function fillOutTypes(){
+    // 'LABOR - Straight Time' 'Lunch Hours' 'Public Holiday Not Worked' 'Vacation' 'Sick Pay'
+  }
+
+  function fillOutLocation(){
+    // 'United States'
+  }
+
+  function fillOutState(){
+    // 'New York'
+  }
+
   function detectInputs() {
     var allInputs = document.querySelectorAll('span input');
     var filteredInputs = [];
@@ -188,6 +216,7 @@
       return {week: data.week, dates: data.dates, inputs: data.inputs}
     }).then(function(data) {
       console.log(data);
+      breakUpHrs(data);
 
       // for (var j = 0; j < data.inputs.length; j++) {
       //
@@ -285,6 +314,10 @@
     arrayOfDates.push(arrayOfDates.shift());
     arrayOfDates.push(arrayOfDates.shift());
     return arrayOfDates
+  }
+
+  function breakUpHrs(hrs){
+    debugger
   }
 
   //   console.log(getResults('05_01_16'));
