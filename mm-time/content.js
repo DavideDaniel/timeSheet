@@ -219,7 +219,7 @@
       console.log(data);
 
       for (var i = 0; i < data.week.length; i++) {
-        // console.log(data.dates[i]);
+        console.log(data.dates[i]);
         data.dates[i] = dateChecker(data.dates[i]);
         if (data.dates[i] === data.week[i].date) {
           // console.log(data.dates[i]);
@@ -230,7 +230,7 @@
       return {week: data.week, dates: data.dates, inputs: data.inputs}
     }).then(function(data) {
       console.log(data);
-      breakUpHrs(data);
+      // breakUpHrs(data);
 
       // for (var j = 0; j < data.inputs.length; j++) {
       //
@@ -314,19 +314,18 @@
 
                   break;
                 case "6":
-
-                  if (vacationHours >= 8) {
-                    debugger
+                  if (vacationHours >= 1) {
+                    
                     data.inputs[j].value = vacationHours;
                     createTemplate(pRow, '06 VA', 'Vacation');
-                    // calculate(pNode).startInput(startAt);
-                    // calculate(pNode).calcStopTime();
+                    calculate(pNode).startInput(startAt);
+                    calculate(pNode).calcStopTime();
                   }
                   break;
                 case "7":
 
                   if (holidayHours >= 8) {
-                    debugger
+                    
                     data.inputs[j].value = holidayHours;
                     createTemplate(pRow, '04 HO', 'Public Holiday Not Worked');
                     // calculate(pNode).startInput(startAt);
@@ -335,7 +334,6 @@
 
                   break;
                 case "8":
-
                   if (data.week[w].nonBillableHrs > 0) {
                     data.inputs[j].value = data.week[w].nonBillableHrs;
                     createTemplate(pRow, '08 UA', 'LABOR - Straight Time');
@@ -348,8 +346,7 @@
                   // data.inputs[j].value = 0;
                   break;
               }
-              // calculate(pNode).startInput(startAt);
-              // calculate(pNode).calcStopTime();
+
             }
           }
         }
@@ -358,11 +355,6 @@
     }, function(error) {
       console.log('CAUGHT::', error);
     });
-
-    // var date = '';
-    // if (data.dates[i]) {
-    //   date = dates[i].replace(/\//g, '_');
-    // }
 
   }
 
@@ -379,20 +371,20 @@
     return arrayOfDates
   }
 
-  function breakUpHrs(hrs) {
-
-    var week = hrs.week
-    for (var i = week.length - 1; i >= 0; i--) {
-      var day = week[i]
-      if (day.vacationHrs >= 8 || day.holidayHrs >= 8) {
-        // console.log('use vacation template')
-      }
-      if (day.holidayHrs < 8 && day.totalHrs >= 4) {
-        console.log('use lunch standard day template');
-      }
-      // if (day.totalHrs >= 4 && day.) {};
-    }
-  }
+  // function breakUpHrs(hrs) {
+  //
+  //   var week = hrs.week
+  //   for (var i = week.length - 1; i >= 0; i--) {
+  //     var day = week[i]
+  //     if (day.vacationHrs >= 8 || day.holidayHrs >= 8) {
+  //       // console.log('use vacation template')
+  //     }
+  //     if (day.holidayHrs < 8 && day.totalHrs >= 4) {
+  //       console.log('use lunch standard day template');
+  //     }
+  //     // if (day.totalHrs >= 4 && day.) {};
+  //   }
+  // }
 
   //   console.log(getResults('05_01_16'));
 })();
