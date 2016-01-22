@@ -2,7 +2,7 @@ $('.noBorder [valign="bottom"]').next().next().addClass('firstDayRow dayRow');
 $('tr[valign="top"]:contains("Day Total")').each(function(index, el) {
   if (index < $('tr[valign="top"]:contains("Day Total")').length) {
     $(el).addClass('dayDivider');
-    
+
     if (index < $('tr[valign="top"]:contains("Day Total")').length - 1) {
       $(el).next().next().addClass('firstDayRow dayRow');
     }
@@ -12,7 +12,7 @@ $('tr[valign="top"]:contains("Day Total")').each(function(index, el) {
 
 $('.dayDivider:last').addClass('lastDivider')
 $('.firstDayRow').nextUntil('.lastDivider').filter('tr[valign="top"]').not('.dayDivider').addClass('dayRow');
-function colorRows(){
+function colorRows() {
   // $('.dayDivider').removeClass('dayRow')
   $('.dayDivider').css('background-color', 'teal');
   // $('.firstDayRow').css('background-color', 'yellow');
@@ -23,17 +23,18 @@ function colorRows(){
 colorRows();
 
 function getText(el) {
-  if (typeof el.textContent == 'string') return el.textContent;
-  if (typeof el.innerText == 'string') return el.innerText;
-}
+  if (typeof el.textContent == 'string')
+    return el.textContent;
+  if (typeof el.innerText == 'string')
+    return el.innerText;
+  }
 
 var datesArr = [];
 var dayClass = '';
 
-
-$('.firstDayRow').each(function(i,e){
+$('.firstDayRow').each(function(i, e) {
   var dateClass = getText(e.cells[1]).replace(/\//g, '_');
-$('.dayDivider').eq(i).addClass(dateClass);
+  $('.dayDivider').eq(i).addClass(dateClass);
 });
 $('.dayRow').each(function(index, el) {
   var billClass = '';
@@ -79,7 +80,7 @@ $('.dayRow').each(function(index, el) {
     var num = $(this).text();
     if ($.isNumeric(num)) {
       // $(this).css('background-color', 'green');
-      $(this).addClass(billClass + ' mm_hours ' + dayClass + ' '+holidayClass+' '+vacationClass+' '+adminClass + ' ' + internalClass + '');
+      $(this).addClass(billClass + ' mm_hours ' + dayClass + ' ' + holidayClass + ' ' + vacationClass + ' ' + adminClass + ' ' + internalClass + '');
 
     }
   });
@@ -94,8 +95,8 @@ function getBillHrs(arr) {
   for (var i = 0; i < arr.length; i++) {
     hours += getHours(arr[i]);
   }
-  
-  if(arr.hasClass('dayDivider')){
+
+  if (arr.hasClass('dayDivider')) {
     return parseFloat(arr.text().match(/([\d.])+/m)[0])
   }
 
@@ -110,7 +111,7 @@ var HoursObj = function(date) {
   this.holidayHrs = getBillHrs($('.' + date).filter('.holiday'));
   this.adminHrs = getBillHrs($('.' + date).filter('.admin'));
   this.internalHrs = getBillHrs($('.' + date).filter('.internal'));
-  this.totalHrs = getBillHrs($('.'+ date).filter('.dayDivider'));
+  this.totalHrs = getBillHrs($('.' + date).filter('.dayDivider'));
 }
 
 var datesObjArr = [];
@@ -120,30 +121,24 @@ for (var i = 0; i < datesArr.length; i++) {
   datesObjArr.push(hrsObj);
 }
 
-chrome.storage.local.set({
-  'week': []
-})
+chrome.storage.local.set({'week': []})
 var restoredObjs = [];
 function saveDays() {
   getDays().then(function(data) {
-      data = datesObjArr;
-      chrome.storage.local.set({
-        'week': data
-      });
-      console.log(restoredObjs,'saving week as:',data);
-    })
-    .catch(function(reason) {
-      console.error(reason);
-    });
+    data = datesObjArr;
+    chrome.storage.local.set({'week': data});
+    console.log(restoredObjs, 'saving week as:', data);
+  }).catch(function(reason) {
+    console.error(reason);
+  });
 }
-
 
 saveDays();
 
 function getDays() {
-  var days = new Promise(function(resolve,reject){
+  var days = new Promise(function(resolve, reject) {
     chrome.storage.local.get('week', function(item) {
-      console.log('getting',item.week);
+      console.log('getting', item.week);
       restoredObjs = item.week;
       resolve(item.week)
     });
