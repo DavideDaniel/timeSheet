@@ -1,3 +1,4 @@
+
 $('.noBorder [valign="bottom"]').next().next().addClass('firstDayRow dayRow');
 $('tr[valign="top"]:contains("Day Total")').each(function(index, el) {
   if (index < $('tr[valign="top"]:contains("Day Total")').length) {

@@ -48,7 +48,6 @@
   }
 
   function createTemplate(row, task, type) {
-
     fillOutProject(row);
     fillOutTasks(row, task);
     fillOutTypes(row, type);
@@ -382,7 +381,20 @@
     arrayOfDates.push(arrayOfDates.shift());
     return arrayOfDates
   }
+  debugger
 
+  function indexRows(node){
+    function setJQpNode(input) {
+    return $(input).closest('.x1u').parent().closest('.x1u');
+  }
+
+  var startNode = setJQpNode($(node));
+
+  var $row = $(startNode).parent()
+  var colIndex = $row.children().index(startNode);
+  var col = $row.parent().children('tr').index($parentTab)
+  var $rows = $row.parent().children('tr')
+  }
   // function breakUpHrs(hrs) {
   //
   //   var week = hrs.week
