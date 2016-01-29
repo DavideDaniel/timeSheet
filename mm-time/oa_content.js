@@ -44,6 +44,8 @@ $.when($('.dayRow').each(function(index, el) {
   var adminClass = '';
   var vacationClass = '';
   var holidayClass = '';
+  var sickClass = '';
+
 
   if ($(el).hasClass('firstDayRow')) {
     dayClass = getText(el.cells[1]).replace(/\//g, '_');
@@ -64,22 +66,27 @@ $.when($('.dayRow').each(function(index, el) {
 
   if (getText(el.cells[3]) == 'Maxymiser') {
     $(this).css('background-color', 'yellow');
-    internalClass = 'internal';
+    internalClass = 'internal ';
   }
 
   if (getText(el.cells[7]) == 'Personal admin') {
     $(this).css('background-color', 'purple');
-    adminClass = 'admin';
+    adminClass = 'admin ';
+  }
+
+  if (getText(el.cells[7]) == 'Sick Time') {
+    $(this).css('background-color', 'orange');
+    sickClass = 'sick ';
   }
 
   if (getText(el.cells[7]) == 'Vacation') {
     $(this).css('background-color', 'blue');
-    vacationClass = 'vacation';
+    vacationClass = 'vacation ';
   }
 
   if (getText(el.cells[7]) == 'Bank\/Statutory holiday') {
     $(this).css('background-color', 'green');
-    holidayClass = 'holiday';
+    holidayClass = 'holiday ';
     // $(this).addClass('holiday');
   }
 
@@ -87,14 +94,14 @@ $.when($('.dayRow').each(function(index, el) {
     var num = $(this).text();
     if ($.isNumeric(num)) {
       // $(this).css('background-color', 'green');
-      $(this).addClass(billClass + ' mm_hours ' + dayClass + ' ' + holidayClass + ' ' + vacationClass + ' ' + adminClass + ' ' + internalClass + '');
+      $(this).addClass(billClass + ' mm_hours ' + dayClass + ' ' + holidayClass + ' '+ sickClass + ' ' +  vacationClass + ' ' + adminClass + ' ' + internalClass + '');
 
     }
   });
 
 })).then(function() {
   $('.internal').each(function(index, el) {
-    if ($(el).hasClass('holiday') || $(el).hasClass('vacation') || $(el).hasClass('admin')) {
+    if ($(el).hasClass('sick') || $(el).hasClass('holiday') || $(el).hasClass('vacation') || $(el).hasClass('admin')) {
       $(el).removeClass('internal');
     }
   });
@@ -126,6 +133,7 @@ var HoursObj = function(date) {
   this.vacationHrs = getBillHrs($('.' + date).filter('.vacation'));
   this.holidayHrs = getBillHrs($('.' + date).filter('.holiday'));
   this.adminHrs = getBillHrs($('.' + date).filter('.admin'));
+  this.sickHrs = getBillHrs($('.' + date).filter('.sick'));
   this.internalHrs = getBillHrs($('.' + date).filter('.internal'));
   this.totalHrs = getBillHrs($('.' + date).filter('.dayDivider'));
 }

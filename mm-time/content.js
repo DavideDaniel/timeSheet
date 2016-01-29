@@ -242,6 +242,7 @@
         var vacationHours = data.week[w].vacationHrs;
         var totalHours = data.week[w].totalHrs;
         var billedHours = data.week[w].billableHours;
+        var sickHours = data.week[w].sickHrs;
         var nextBilledHrs = 0;
         if (billedHours > 4) {
           billedHours = nextBilledHrs = billedHours / 2
@@ -345,6 +346,11 @@
 
                   break;
                 case "8":
+                  if (sickHours >= 1) {
+                    data.inputs[j].value = sickHours;
+                    createTemplate(pRow, '05 SI', 'Sick Pay');
+                  }
+                case "9":
                   if (data.week[w].nonBillableHrs > 0) {
                     data.inputs[j].value = data.week[w].nonBillableHrs;
                     createTemplate(pRow, '08 UA', 'LABOR - Straight Time');
@@ -381,7 +387,7 @@
     arrayOfDates.push(arrayOfDates.shift());
     return arrayOfDates
   }
-  debugger
+
 
   function indexRows(node){
     function setJQpNode(input) {
@@ -395,6 +401,7 @@
   var col = $row.parent().children('tr').index($parentTab)
   var $rows = $row.parent().children('tr')
   }
+
   // function breakUpHrs(hrs) {
   //
   //   var week = hrs.week
